@@ -1,21 +1,5 @@
 # NBT
 NamedBinaryTag library for Java
-  
-## Dependency info
-Maven:
-```xml
-<dependency>
-    <groupId>net.forthecrown</groupId>
-    <artifactId>NBT</artifactId>
-    <version>1.0.0</version>
-</dependency>
-```
-Gradle:
-```kotlin
-dependencies {
-  implementation("net.forthecrown:NBT:1.0.0")
-}
-```
 ## Writing and reading
 Reading binary data:
 ```java
@@ -62,4 +46,19 @@ TagPath path = TagPath.builder()
 	.addObjectNode("bar")
 	.addMatchAll()
 	.build();
+```
+## Dependency info
+Maven:
+```xml
+<dependency>
+    <groupId>net.forthecrown</groupId>
+    <artifactId>NBT</artifactId>
+    <version>1.0.0</version>
+</dependency>
+```
+Gradle:
+```kotlin
+dependencies {
+  implementation("net.forthecrown:NBT:1.0.0")
+}
 ```
