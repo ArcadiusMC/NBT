@@ -1,3 +1,4 @@
+
 # NBT
 NamedBinaryTag library for Java
 ## Writing and reading
@@ -53,12 +54,19 @@ Maven:
 <dependency>
     <groupId>net.forthecrown</groupId>
     <artifactId>NBT</artifactId>
-    <version>1.0.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 Gradle:
 ```kotlin
+repositories {
+  mavenCentral()
+}
+
 dependencies {
-  implementation("net.forthecrown:NBT:1.0.0")
+  implementation("net.forthecrown:NBT:(latest version)")
+  
+  // If you're using this with PaperMC, you can also include 
+  implementation("net.forthecrown:PaperNBT:(latest version)")
 }
 ```
