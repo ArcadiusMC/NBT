@@ -116,4 +116,3 @@ run/
 !gradle-wrapper.jar
 # Ignore Gradle build output directory
 build
-/gradle/

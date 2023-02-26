@@ -1,9 +1,11 @@
 plugins {
   id("java")
+  id("maven-publish")
+  id("signing")
 }
 
 group = "net.forthecrown"
-version = "1.0-SNAPSHOT"
+version = "1.0.0"
 
 repositories {
   mavenCentral()
@@ -24,5 +26,55 @@ tasks {
 
   java {
     withSourcesJar()
+    withJavadocJar()
   }
+}
+
+publishing {
+  publications {
+    create<MavenPublication>("maven") {
+      from(components["java"])
+
+      pom {
+        name.set("NBT")
+        description.set("Java NamedBinaryTag library")
+        url.set("https://github.com/ForTheCrown/NBT")
+
+        licenses {
+          license {
+            name.set("MIT License")
+            url.set("https://raw.githubusercontent.com/ForTheCrown/NBT/main/LICENSE.md")
+          }
+        }
+
+        developers {
+          developer {
+            name.set("JulieWoolie")
+            id.set("JulieWoolie")
+          }
+        }
+
+        scm {
+          connection.set("scm:git:git:github.com/ForTheCrown/NBT/.git")
+          developerConnection.set("scm:git:ssh://github.com/ForTheCrown/NBT/.git")
+          url.set("https://github.com/ForTheCrown/NBT")
+        }
+      }
+    }
+  }
+
+  repositories {
+    maven {
+      name = "OSSRH"
+      url = uri("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
+      credentials {
+        username = project.properties["ossrhUsername"].toString()
+        password = project.properties["ossrhPassword"].toString()
+      }
+    }
+  }
+}
+
+signing {
+  sign(publishing.publications["maven"])
 }
