@@ -24,11 +24,11 @@ public final class PaperNbt {
 
   /* ---------------------------- GENERAL TAGS ---------------------------- */
 
-  public CompoundTag saveEntity(Entity entity) {
+  public static CompoundTag saveEntity(Entity entity) {
     return tags.saveEntity(entity);
   }
 
-  public void loadEntity(Entity entity, CompoundTag tag) {
+  public static void loadEntity(Entity entity, CompoundTag tag) {
     tags.loadEntity(entity, tag);
   }
 
@@ -71,11 +71,11 @@ public final class PaperNbt {
     return items.loadItem(tag);
   }
 
-  public CompoundTag getUnhandledTags(ItemMeta meta) {
+  public static CompoundTag getUnhandledTags(ItemMeta meta) {
     return items.getUnhandledTags(meta);
   }
 
-  public void setUnhandledTags(ItemMeta meta, CompoundTag tag) {
+  public static void setUnhandledTags(ItemMeta meta, CompoundTag tag) {
     items.setUnhandledTags(meta, tag);
   }
 
