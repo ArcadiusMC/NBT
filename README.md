@@ -53,12 +53,12 @@ Maven:
 <dependency>
     <groupId>net.forthecrown</groupId>
     <artifactId>NBT</artifactId>
-    <version>1.0.0</version>
+    <version>LATEST</version>
 </dependency>
 ```
 Gradle:
 ```kotlin
 dependencies {
-  implementation("net.forthecrown:NBT:1.0.0")
+  implementation("net.forthecrown:NBT:(latest version)")
 }
 ```
