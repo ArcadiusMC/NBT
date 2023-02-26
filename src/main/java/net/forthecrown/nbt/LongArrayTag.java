@@ -8,6 +8,9 @@ import it.unimi.dsi.fastutil.longs.LongList;
 public interface LongArrayTag extends LongList, CollectionTag {
 
   @Override
+  LongArrayTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitLongArray(this);
   }

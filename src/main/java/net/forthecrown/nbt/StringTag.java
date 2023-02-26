@@ -12,6 +12,9 @@ public interface StringTag extends BinaryTag, CharSequence {
   String value();
 
   @Override
+  StringTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitString(this);
   }

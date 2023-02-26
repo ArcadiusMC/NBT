@@ -8,6 +8,9 @@ import it.unimi.dsi.fastutil.bytes.ByteList;
 public interface ByteArrayTag extends CollectionTag, ByteList {
 
   @Override
+  ByteArrayTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitByteArray(this);
   }

@@ -72,4 +72,7 @@ public interface CollectionTag extends TagStructure {
    * @return amount of removed elements
    */
   int removeMatchingTags(Predicate<BinaryTag> filter);
+
+  @Override
+  CollectionTag copy();
 }

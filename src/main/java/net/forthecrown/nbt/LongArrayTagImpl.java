@@ -128,7 +128,7 @@ class LongArrayTagImpl extends LongArrayList implements LongArrayTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public LongArrayTag copy() {
     return new LongArrayTagImpl(elements().clone());
   }
 

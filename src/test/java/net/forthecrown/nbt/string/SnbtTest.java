@@ -28,6 +28,7 @@ class SnbtTest {
     tag.putLongArray("longs", 1L, 12131L, 34235L, -1564L);
     tag.putBoolean("boolean", true);
     tag.put("strings", BinaryTags.stringList("string_1", "string_2"));
+    tag.put("empty_list", BinaryTags.listTag());
     tag.putDouble("double", 1.232355342D);
 
     CompoundTag nested = BinaryTags.compoundTag();

@@ -93,7 +93,7 @@ class CompoundTagImpl
   }
 
   @Override
-  public BinaryTag copy() {
+  public CompoundTag copy() {
     CompoundTag result = new CompoundTagImpl(size());
 
     for (var e: entrySet()) {

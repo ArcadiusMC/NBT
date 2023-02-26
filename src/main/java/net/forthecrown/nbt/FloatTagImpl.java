@@ -52,7 +52,7 @@ class FloatTagImpl implements FloatTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public FloatTag copy() {
     return this;
   }
 

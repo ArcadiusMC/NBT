@@ -72,7 +72,7 @@ class ByteTagImpl implements ByteTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public ByteTag copy() {
     return this;
   }
 }

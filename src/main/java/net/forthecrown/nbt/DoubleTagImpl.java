@@ -52,7 +52,7 @@ class DoubleTagImpl implements DoubleTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public DoubleTag copy() {
     return this;
   }
 

@@ -171,7 +171,10 @@ class SnbtParser {
   {
     tokenizer.expect(start);
 
-    while (true) {
+    Type peekedType;
+    while ((peekedType = tokenizer.peekToken().type()) != Type.EOF
+        && peekedType != end
+    ) {
       parser.parseEntry();
 
       var peek = tokenizer.peekToken();

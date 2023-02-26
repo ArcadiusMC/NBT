@@ -52,7 +52,7 @@ class LongTagImpl implements LongTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public LongTag copy() {
     return this;
   }
 

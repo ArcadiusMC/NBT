@@ -65,6 +65,14 @@ class PathParser {
     if (peek == FILTER_START) {
       var predicate = parseFilter();
       builder.setRootFilter(predicate);
+
+      peek = reader.peek();
+
+      if (peek != DELIMITER) {
+        return;
+      }
+
+      reader.expect(DELIMITER);
     }
 
     while (true) {
@@ -74,7 +82,9 @@ class PathParser {
       if (reader.peek() == DELIMITER) {
         reader.read();
       } else if (reader.peek() != INDEX_START) {
-        if (reader.peek() != -1) {
+        // Calling expect() when the char is there, will consume the character,
+        // meaning we read more input than we're supposed to
+        if (reader.peek() != -1 && reader.peek() != ' ') {
           reader.expect(' ');
         }
 
@@ -94,7 +104,9 @@ class PathParser {
         && !ReaderWrapper.isQuote(peek)
     ) {
       throw new PathParseException(
-          "Unexpected token '" + Character.toString(peek) + "'"
+          "Unexpected token '"
+              + (peek == -1 ? "EOF" : Character.toString(peek))
+              + "'"
       );
     }
 

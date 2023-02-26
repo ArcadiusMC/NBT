@@ -86,12 +86,13 @@ public interface TagPath {
   /**
    * Sets the tag pointed to by this path
    * @param tag Tag to change
-   * @param element Element to place into the {@code tag}
+   * @param element Element to place into the {@code tag}, will be copied each
+   *                time it's inserted into a different container
    * @return Amount of changed elements, 0, if nothing changed
    */
   default int set(@NotNull BinaryTag tag, @NotNull BinaryTag element) {
     Objects.requireNonNull(element, "Element");
-    return set(tag, () -> element);
+    return set(tag, element::copy);
   }
 
   /**

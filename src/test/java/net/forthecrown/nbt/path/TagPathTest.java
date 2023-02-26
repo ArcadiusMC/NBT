@@ -11,6 +11,7 @@ import net.forthecrown.nbt.IntArrayTag;
 import net.forthecrown.nbt.IntTag;
 import net.forthecrown.nbt.ListTag;
 import net.forthecrown.nbt.StringTag;
+import net.forthecrown.nbt.string.Snbt;
 import org.junit.jupiter.api.Test;
 
 class TagPathTest {
@@ -65,8 +66,8 @@ class TagPathTest {
   void get_objectFiltering() {
     var tag = createTestTag();
 
-    TagPath success = TagPath.parse("{an_int:1000}obj.a_long");
-    TagPath failure = TagPath.parse("{an_int:0999}obj.a_long");
+    TagPath success = TagPath.parse("{an_int:1000}.obj.a_long");
+    TagPath failure = TagPath.parse("{an_int:0999}.obj.a_long");
 
     var successList = success.get(tag);
     var failureList = failure.get(tag);
@@ -121,8 +122,8 @@ class TagPathTest {
   void remove_objectFiltering() {
     var tag = createTestTag();
 
-    TagPath success = TagPath.parse("{an_int:1000}obj.a_long");
-    TagPath failure = TagPath.parse("{an_int:0999}obj.a_long");
+    TagPath success = TagPath.parse("{an_int:1000}.obj.a_long");
+    TagPath failure = TagPath.parse("{an_int:0999}.obj.a_long");
 
     var successCount = success.remove(tag);
     var failureCount = failure.remove(tag);
@@ -182,4 +183,16 @@ class TagPathTest {
     assertEquals(0, failureCount);
   }
 
+  @Test
+  void set_nonExisting() {
+    var tag = createTestTag();
+    System.out.println(Snbt.toString(tag, true, true));
+
+    TagPath path = TagPath.parse("obj.another_value.asd");
+    var value = BinaryTags.byteTag(1);
+
+    int changed = path.set(tag, value);
+    System.out.println(Snbt.toString(tag, true, true));
+    assertTrue(changed >= 1);
+  }
 }

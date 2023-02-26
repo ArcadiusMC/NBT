@@ -34,6 +34,9 @@ public interface DoubleTag extends NumberTag {
   }
 
   @Override
+  DoubleTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitDouble(this);
   }

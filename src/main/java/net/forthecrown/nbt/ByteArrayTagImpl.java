@@ -121,7 +121,7 @@ class ByteArrayTagImpl
   }
 
   @Override
-  public BinaryTag copy() {
+  public ByteArrayTagImpl copy() {
     return new ByteArrayTagImpl(elements().clone());
   }
 

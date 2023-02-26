@@ -98,7 +98,7 @@ class StringTagImpl implements StringTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public StringTag copy() {
     return this;
   }
 

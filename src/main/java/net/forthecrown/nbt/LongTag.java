@@ -34,6 +34,9 @@ public interface LongTag extends NumberTag {
   }
 
   @Override
+  LongTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitLong(this);
   }

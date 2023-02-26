@@ -121,7 +121,7 @@ class IntArrayTagImpl extends IntArrayList implements IntArrayTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public IntArrayTag copy() {
     return new IntArrayTagImpl(elements().clone());
   }
 

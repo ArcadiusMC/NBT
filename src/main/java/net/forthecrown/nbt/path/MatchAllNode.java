@@ -5,7 +5,9 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.forthecrown.nbt.BinaryTag;
+import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CollectionTag;
+import org.jetbrains.annotations.Nullable;
 
 class MatchAllNode extends FilterableNode {
 
@@ -14,9 +16,20 @@ class MatchAllNode extends FilterableNode {
   }
 
   @Override
-  public void get(BinaryTag tag, List<BinaryTag> results) {
+  public void get(BinaryTag tag,
+                  List<BinaryTag> results,
+                  @Nullable Supplier<BinaryTag> supplier
+  ) {
     if (!(tag instanceof CollectionTag c)) {
       return;
+    }
+
+    if (supplier != null && c.isEmpty()) {
+      var element = supplier.get();
+
+      if (c.addTag(element)) {
+        results.add(element);
+      }
     }
 
     c.forEachTag(tag1 -> {
@@ -58,6 +71,11 @@ class MatchAllNode extends FilterableNode {
     }
 
     return changed;
+  }
+
+  @Override
+  public BinaryTag createParent() {
+    return BinaryTags.listTag();
   }
 
   @Override

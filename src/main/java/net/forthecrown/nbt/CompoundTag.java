@@ -222,6 +222,9 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    */
   CompoundTag merge(CompoundTag source);
 
+  @Override
+  CompoundTag copy();
+
   /* ---------------------------- GET METHODS ----------------------------- */
 
   /**

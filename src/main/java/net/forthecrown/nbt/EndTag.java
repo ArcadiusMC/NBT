@@ -6,6 +6,10 @@ package net.forthecrown.nbt;
  * <b>Note</b>: Should <b>NOT</b> be used alongside regular tags
  */
 public interface EndTag extends BinaryTag {
+
+  @Override
+  EndTag copy();
+
   @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitEnd(this);

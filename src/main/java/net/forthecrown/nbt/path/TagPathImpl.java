@@ -23,7 +23,7 @@ class TagPathImpl implements TagPath, Iterable<Node> {
 
   @NotNull
   @Override
-  public Iterator<Node> iterator() {
+  public Iter iterator() {
     return new Iter();
   }
 
@@ -35,7 +35,7 @@ class TagPathImpl implements TagPath, Iterable<Node> {
     tags.add(tag);
 
     for (Node node: this) {
-      tags = node.get(tags);
+      tags = node.get(tags, null);
 
       if (tags.isEmpty()) {
         return Collections.emptyList();
@@ -58,7 +58,7 @@ class TagPathImpl implements TagPath, Iterable<Node> {
       var n = it.next();
 
       if (it.hasNext()) {
-        tags = n.get(tags);
+        tags = n.get(tags, null);
       } else {
         return n.remove(tags);
       }
@@ -81,7 +81,10 @@ class TagPathImpl implements TagPath, Iterable<Node> {
       var n = it.next();
 
       if (it.hasNext()) {
-        tags = n.get(tags);
+        var next = it.next();
+        it.index--;
+
+        tags = n.get(tags, next::createParent);
       } else {
         return n.set(tags, supplier);
       }

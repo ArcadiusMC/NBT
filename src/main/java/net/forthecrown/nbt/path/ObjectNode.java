@@ -5,6 +5,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.forthecrown.nbt.BinaryTag;
+import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import net.forthecrown.nbt.util.ReaderWrapper;
 import org.jetbrains.annotations.Nullable;
@@ -23,17 +24,29 @@ class ObjectNode extends FilterableNode {
   }
 
   @Override
-  public void get(BinaryTag tag, List<BinaryTag> results) {
+  public void get(BinaryTag tag,
+                  List<BinaryTag> results,
+                  @Nullable Supplier<BinaryTag> supplier
+  ) {
     if (!(tag instanceof CompoundTag c)) {
       return;
     }
 
     var found = c.get(name);
-    if (found == null || !test(found)) {
-      return;
-    }
 
-    results.add(found);
+    if (found == null) {
+      if (supplier == null) {
+        System.out.println(name);
+        return;
+      }
+
+      System.out.println("put");
+      var res = supplier.get();
+      c.put(name, res);
+      results.add(res);
+    } else if (test(found)) {
+      results.add(found);
+    }
   }
 
   @Override
@@ -70,6 +83,11 @@ class ObjectNode extends FilterableNode {
 
     c.put(name, newTag);
     return 1;
+  }
+
+  @Override
+  public BinaryTag createParent() {
+    return BinaryTags.compoundTag();
   }
 
   @Override

@@ -216,7 +216,7 @@ public class ListTagImpl extends AbstractObjectList<BinaryTag> implements ListTa
   }
 
   @Override
-  public BinaryTag copy() {
+  public ListTag copy() {
     ListTag result = new ListTagImpl();
 
     forEach(tag -> {

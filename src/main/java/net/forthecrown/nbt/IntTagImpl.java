@@ -51,7 +51,7 @@ class IntTagImpl implements IntTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public IntTag copy() {
     return this;
   }
 

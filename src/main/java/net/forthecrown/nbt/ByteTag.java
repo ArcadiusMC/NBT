@@ -31,6 +31,9 @@ public interface ByteTag extends NumberTag {
   }
 
   @Override
+  ByteTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitByte(this);
   }

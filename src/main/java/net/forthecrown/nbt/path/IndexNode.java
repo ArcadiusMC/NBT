@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import net.forthecrown.nbt.BinaryTag;
+import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CollectionTag;
+import org.jetbrains.annotations.Nullable;
 
 class IndexNode implements Node {
 
@@ -19,7 +21,10 @@ class IndexNode implements Node {
   }
 
   @Override
-  public void get(BinaryTag tag, List<BinaryTag> results) {
+  public void get(BinaryTag tag,
+                  List<BinaryTag> results,
+                  @Nullable Supplier<BinaryTag> supplier
+  ) {
     if (!(tag instanceof CollectionTag c)
         || index >= c.size()
     ) {
@@ -70,6 +75,11 @@ class IndexNode implements Node {
     }
 
     return c.setTag(index, newTag) ? 1 : 0;
+  }
+
+  @Override
+  public BinaryTag createParent() {
+    return BinaryTags.listTag();
   }
 
   @Override

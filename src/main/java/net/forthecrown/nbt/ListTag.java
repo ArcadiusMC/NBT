@@ -25,6 +25,9 @@ public interface ListTag extends CollectionTag, List<BinaryTag> {
   ListTag merge(ListTag other);
 
   @Override
+  ListTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitList(this);
   }

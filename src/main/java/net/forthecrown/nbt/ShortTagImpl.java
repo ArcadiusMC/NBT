@@ -51,7 +51,7 @@ class ShortTagImpl implements ShortTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public ShortTag copy() {
     return this;
   }
 

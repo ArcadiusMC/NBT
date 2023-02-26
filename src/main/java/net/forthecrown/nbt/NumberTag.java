@@ -16,4 +16,7 @@ public interface NumberTag extends BinaryTag {
   float floatValue();
 
   double doubleValue();
+
+  @Override
+  NumberTag copy();
 }

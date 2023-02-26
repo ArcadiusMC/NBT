@@ -8,6 +8,9 @@ import it.unimi.dsi.fastutil.ints.IntList;
 public interface IntArrayTag extends CollectionTag, IntList {
 
   @Override
+  IntArrayTag copy();
+
+  @Override
   default void visit(BinaryTagVisitor visitor) {
     visitor.visitIntArray(this);
   }

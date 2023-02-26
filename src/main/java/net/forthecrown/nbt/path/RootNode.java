@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import net.forthecrown.nbt.BinaryTag;
+import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,7 +15,10 @@ class RootNode extends FilterableNode {
   }
 
   @Override
-  public void get(BinaryTag tag, List<BinaryTag> results) {
+  public void get(BinaryTag tag,
+                  List<BinaryTag> results,
+                  @Nullable Supplier<BinaryTag> supplier
+  ) {
     if (!(tag instanceof CompoundTag c) || !test(c)) {
       return;
     }
@@ -35,6 +39,11 @@ class RootNode extends FilterableNode {
   @Override
   public String toString() {
     return "Root(filtered=" + isFiltered() + ")";
+  }
+
+  @Override
+  public BinaryTag createParent() {
+    return BinaryTags.compoundTag();
   }
 
   @Override

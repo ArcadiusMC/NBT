@@ -33,7 +33,7 @@ class EndTagImpl implements EndTag {
   }
 
   @Override
-  public BinaryTag copy() {
+  public EndTag copy() {
     return this;
   }
 
