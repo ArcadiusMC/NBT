@@ -129,42 +129,98 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
     return put(name, BinaryTags.doubleTag(value));
   }
 
+  /**
+   * Places the specified byte array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putByteArray(String name, byte... values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.byteArrayTag(values));
   }
 
+  /**
+   * Places the specified byte array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putByteArray(String name, Collection<Byte> values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.byteArrayTag(values));
   }
 
+  /**
+   * Places the specified int array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putIntArray(String name, int... values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.intArrayTag(values));
   }
 
+  /**
+   * Places the specified int array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putIntArray(String name, Collection<Integer> values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.intArrayTag(values));
   }
 
+  /**
+   * Places the specified long array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putLongArray(String name, long... values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.longArrayTag(values));
   }
 
+  /**
+   * Places the specified long array mapping into this compound
+   * @param name name of the mapping
+   * @param values mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putLongArray(String name, Collection<Long> values) {
     Objects.requireNonNull(values);
     return put(name, BinaryTags.longArrayTag(values));
   }
 
+  /**
+   * Places the specified UUID mapping into this compound
+   * @param name name of the mapping
+   * @param uuid mapping value
+   * @return the previously mapped value associated with {@code name}, or
+   *         {@code null}, if no preexisting value existed
+   */
   default BinaryTag putUUID(String name, UUID uuid) {
     Objects.requireNonNull(uuid);
     return put(name, BinaryTags.saveUuid(uuid));
   }
 
-  void merge(CompoundTag source);
+  /**
+   * Places all mappings from the {@code source} compound into this compound
+   * and return self.
+   *
+   * @param source Source to get mappings from
+   * @return {@code this}
+   */
+  CompoundTag merge(CompoundTag source);
 
   /* ---------------------------- GET METHODS ----------------------------- */
 
@@ -448,9 +504,47 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
         .orElseGet(BinaryTags::compoundTag);
   }
 
+  /**
+   * Retrieves a UUID mapping at the specified name
+   * @param name name of the mapping
+   * @return Found UUID, or {@code null}, if no UUID was mapped to {@code name}
+   */
   default UUID getUUID(String name) {
     return getOptional(name, TagTypes.intArrayType())
         .map(BinaryTags::loadUuid)
         .orElse(null);
+  }
+
+  /**
+   * Retrieves a list tag mapping at the specified name
+   * @param name name of the mapping
+   * @return Found list, or an empty list, if no mapping was found
+   */
+  default ListTag getList(String name) {
+    return getOptional(name, TagTypes.listType())
+        .orElseGet(BinaryTags::listTag);
+  }
+
+  /**
+   * Retrieves a list tag mapping at the specified name and checks if the found
+   * list has the expected type.
+   *
+   * @param name name of the mapping
+   * @param listType list's expected type
+   * @return Found list, or an empty list if no mapping was found, or if the
+   *         found list's type did not match the specified type
+   */
+  default ListTag getList(String name, TagType<?> listType) {
+    var list = getList(name);
+
+    if (list.isEmpty()) {
+      return list;
+    }
+
+    if (list.listType().getId() != listType.getId()) {
+      return BinaryTags.listTag();
+    }
+
+    return list;
   }
 }

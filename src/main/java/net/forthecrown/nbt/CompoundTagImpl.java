@@ -81,8 +81,9 @@ class CompoundTagImpl
   }
 
   @Override
-  public void merge(CompoundTag source) {
+  public CompoundTag merge(CompoundTag source) {
     putAll(source);
+    return this;
   }
 
   @Override
