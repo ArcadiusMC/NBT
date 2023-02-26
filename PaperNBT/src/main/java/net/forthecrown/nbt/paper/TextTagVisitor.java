@@ -25,7 +25,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.Style;
 import org.jetbrains.annotations.NotNull;
 
-public class TextTagVisitor implements BinaryTagVisitor, ComponentLike {
+class TextTagVisitor implements BinaryTagVisitor, ComponentLike {
 
   private static final Component STRING_QUOTE   = text("'");
   private static final Component ARRAY_START    = text("[");
