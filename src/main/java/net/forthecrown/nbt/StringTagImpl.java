@@ -98,6 +98,11 @@ class StringTagImpl implements StringTag {
   }
 
   @Override
+  public BinaryTag copy() {
+    return this;
+  }
+
+  @Override
   public boolean equals(Object obj) {
     if (obj == this) {
       return true;

@@ -67,6 +67,10 @@ class CompoundTagImpl
   public CompoundTagImpl() {
   }
 
+  public CompoundTagImpl(int expected) {
+    super(expected);
+  }
+
   public CompoundTagImpl(Map<? extends String, ? extends BinaryTag> m) {
     super(m);
   }
@@ -85,6 +89,17 @@ class CompoundTagImpl
   public <T extends BinaryTag> @Nullable T get(String name, TagType<T> type) {
     BinaryTag tag = get(name);
     return tag == null || tag.getId() != type.getId() ? null : (T) tag;
+  }
+
+  @Override
+  public BinaryTag copy() {
+    CompoundTag result = new CompoundTagImpl(size());
+
+    for (var e: entrySet()) {
+      result.put(e.getKey(), e.getValue().copy());
+    }
+
+    return result;
   }
 
   @Override

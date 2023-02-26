@@ -128,6 +128,11 @@ class LongArrayTagImpl extends LongArrayList implements LongArrayTag {
   }
 
   @Override
+  public BinaryTag copy() {
+    return new LongArrayTagImpl(elements().clone());
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (!(o instanceof LongArrayTag tag)) {
       return false;

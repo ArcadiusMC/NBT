@@ -34,7 +34,7 @@ class IntTagImpl implements IntTag {
     }
   };
 
-  private int value;
+  private final int value;
 
   public IntTagImpl(int value) {
     this.value = value;
@@ -48,6 +48,11 @@ class IntTagImpl implements IntTag {
   @Override
   public int intValue() {
     return value;
+  }
+
+  @Override
+  public BinaryTag copy() {
+    return this;
   }
 
   @Override

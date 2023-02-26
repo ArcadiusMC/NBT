@@ -52,6 +52,11 @@ class LongTagImpl implements LongTag {
   }
 
   @Override
+  public BinaryTag copy() {
+    return this;
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;

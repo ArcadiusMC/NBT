@@ -121,6 +121,11 @@ class IntArrayTagImpl extends IntArrayList implements IntArrayTag {
   }
 
   @Override
+  public BinaryTag copy() {
+    return new IntArrayTagImpl(elements().clone());
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (!(o instanceof IntArrayTag)) {
       return false;

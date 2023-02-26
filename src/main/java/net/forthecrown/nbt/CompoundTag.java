@@ -4,6 +4,9 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
+import net.forthecrown.nbt.string.Snbt;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -156,6 +159,11 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
     return put(name, BinaryTags.longArrayTag(values));
   }
 
+  default BinaryTag putUUID(String name, UUID uuid) {
+    Objects.requireNonNull(uuid);
+    return put(name, BinaryTags.saveUuid(uuid));
+  }
+
   void merge(CompoundTag source);
 
   /* ---------------------------- GET METHODS ----------------------------- */
@@ -198,6 +206,16 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    */
   default boolean contains(String name, TagType<?> type) {
     return get(name, type) != null;
+  }
+
+  /**
+   * Tests if this map contains a value associated with {@code name}
+   * @param name name of the mapping
+   * @return {@code true} if {@code name} is mapped to a value, {@code false}
+   *         otherwise
+   */
+  default boolean contains(String name) {
+    return containsKey(name);
   }
 
   /**
@@ -418,5 +436,21 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
     return getOptional(name, TagTypes.longArrayType())
         .map(LongArrayTag::toLongArray)
         .orElseGet(() -> new long[0]);
+  }
+
+  /**
+   * Retrieves a compound mapping at the specified {@code name}
+   * @param name name of the mapping
+   * @return Found compound, or an empty compound, if no valid mapping was found
+   */
+  default @NotNull CompoundTag getCompound(String name) {
+    return getOptional(name, TagTypes.compoundType())
+        .orElseGet(BinaryTags::compoundTag);
+  }
+
+  default UUID getUUID(String name) {
+    return getOptional(name, TagTypes.intArrayType())
+        .map(BinaryTags::loadUuid)
+        .orElse(null);
   }
 }

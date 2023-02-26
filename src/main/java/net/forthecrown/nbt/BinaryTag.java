@@ -114,4 +114,14 @@ public interface BinaryTag {
   default String toNbtString() {
     return Snbt.toString(this);
   }
+
+  /**
+   * Creates a copy of this tag.
+   * <p>
+   * Note: Value tags, like {@link StringTag} and {@link IntTag}, will return
+   * {@code this}, as value objects are immutable so copying serves no purpose
+   *
+   * @return Copy of this tag
+   */
+  BinaryTag copy();
 }

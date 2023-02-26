@@ -33,6 +33,11 @@ class EndTagImpl implements EndTag {
   }
 
   @Override
+  public BinaryTag copy() {
+    return this;
+  }
+
+  @Override
   public @NotNull TagType<? extends BinaryTag> getType() {
     return TYPE;
   }

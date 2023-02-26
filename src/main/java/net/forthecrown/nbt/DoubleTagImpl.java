@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 class DoubleTagImpl implements DoubleTag {
 
-  public static final TagType<DoubleTag> TYPE = new TagType<DoubleTag>() {
+  public static final TagType<DoubleTag> TYPE = new TagType<>() {
     @Override
     public void write(DoubleTag tag, DataOutput output) throws IOException {
       output.writeDouble(tag.doubleValue());
@@ -49,6 +49,11 @@ class DoubleTagImpl implements DoubleTag {
   @Override
   public double doubleValue() {
     return value;
+  }
+
+  @Override
+  public BinaryTag copy() {
+    return this;
   }
 
   @Override

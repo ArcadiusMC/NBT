@@ -70,4 +70,9 @@ class ByteTagImpl implements ByteTag {
   public String toString() {
     return "ByteTag(" + value + ")";
   }
+
+  @Override
+  public BinaryTag copy() {
+    return this;
+  }
 }

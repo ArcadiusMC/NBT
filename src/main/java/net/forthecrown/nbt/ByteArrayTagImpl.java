@@ -121,6 +121,11 @@ class ByteArrayTagImpl
   }
 
   @Override
+  public BinaryTag copy() {
+    return new ByteArrayTagImpl(elements().clone());
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (!(o instanceof ByteArrayTag)) {
       return false;

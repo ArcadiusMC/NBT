@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 class FloatTagImpl implements FloatTag {
 
-  public static final TagType<FloatTag> TYPE = new TagType<FloatTag>() {
+  public static final TagType<FloatTag> TYPE = new TagType<>() {
     @Override
     public void write(FloatTag tag, DataOutput output) throws IOException {
       output.writeFloat(tag.floatValue());
@@ -49,6 +49,11 @@ class FloatTagImpl implements FloatTag {
   @Override
   public float floatValue() {
     return value;
+  }
+
+  @Override
+  public BinaryTag copy() {
+    return this;
   }
 
   @Override

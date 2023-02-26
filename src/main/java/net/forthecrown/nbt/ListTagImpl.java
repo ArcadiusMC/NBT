@@ -216,6 +216,17 @@ public class ListTagImpl extends AbstractObjectList<BinaryTag> implements ListTa
   }
 
   @Override
+  public BinaryTag copy() {
+    ListTag result = new ListTagImpl();
+
+    forEach(tag -> {
+      result.add(tag.copy());
+    });
+
+    return result;
+  }
+
+  @Override
   public boolean equals(Object o) {
     if (this == o) {
       return true;
