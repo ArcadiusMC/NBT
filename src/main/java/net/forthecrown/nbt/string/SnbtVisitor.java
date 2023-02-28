@@ -66,8 +66,14 @@ class SnbtVisitor implements BinaryTagVisitor {
   @Override
   public void visitString(StringTag tag) {
     builder.append(STR_QUOTE)
-        .append(tag)
+        .append(escape(tag.value()))
         .append(STR_QUOTE);
+  }
+
+  private String escape(String s) {
+    return s
+        .replace("\"", "\\\"")
+        .replace("'", "\\'");
   }
 
   @Override
@@ -120,6 +126,11 @@ class SnbtVisitor implements BinaryTagVisitor {
         .append(prefix)
         .append(';');
 
+    if (list.isEmpty()) {
+      builder.append(ARRAY_END);
+      return;
+    }
+
     var it = list.iterator();
     increaseIndent();
 
@@ -154,6 +165,11 @@ class SnbtVisitor implements BinaryTagVisitor {
 
   @Override
   public void visitList(ListTag tag) {
+    if (tag.isEmpty()) {
+      builder.append(ARRAY_START).append(ARRAY_END);
+      return;
+    }
+
     builder.append(ARRAY_START);
 
     var it = tag.iterator();

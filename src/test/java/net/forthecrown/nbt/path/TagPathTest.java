@@ -173,8 +173,8 @@ class TagPathTest {
   void set_objectFiltering() {
     var tag = createTestTag();
 
-    TagPath success = TagPath.parse("{an_int:1000}obj.a_long");
-    TagPath failure = TagPath.parse("{an_int:0999}obj.a_long");
+    TagPath success = TagPath.parse("{an_int:1000}.obj.a_long");
+    TagPath failure = TagPath.parse("{an_int:0999}.obj.a_long");
 
     var successCount = success.set(tag, SET_VALUE);
     var failureCount = failure.set(tag, SET_VALUE);

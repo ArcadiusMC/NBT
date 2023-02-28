@@ -249,6 +249,7 @@ public class ReaderWrapper {
         if (codePoint == quoteChar) {
           builder.appendCodePoint(quoteChar);
           read();
+          escaped = false;
 
           continue;
         }
