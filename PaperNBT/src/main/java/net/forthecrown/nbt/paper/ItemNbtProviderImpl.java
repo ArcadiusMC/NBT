@@ -74,7 +74,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     try {
       Map<String, Tag> tags = (Map<String, Tag>) unhandledTags.get(meta);
       tags.clear();
-      tags.putAll(tags);
+      tags.putAll(TagTranslators.COMPOUND.toMinecraft(tag).tags);
     } catch (ReflectiveOperationException exc) {
       throw new IllegalStateException(exc);
     }
