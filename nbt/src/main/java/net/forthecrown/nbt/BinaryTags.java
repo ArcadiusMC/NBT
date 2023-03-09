@@ -534,13 +534,10 @@ public class BinaryTags {
 
     int[] intArray = arr.toIntArray();
 
-    long most = (long) intArray[0] << Integer.SIZE;
-    most |= intArray[1];
-
-    long least = (long) intArray[2] << Integer.SIZE;
-    least |= intArray[3];
-
-    return new UUID(most, least);
+    return new UUID(
+        (long) intArray[0] << 32 | (long) intArray[1] & 0xFFFFFFFFL,
+        (long) intArray[2] << 32 | (long) intArray[3] & 0xFFFFFFFFL
+    );
   }
 
   /**

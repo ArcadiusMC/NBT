@@ -50,6 +50,7 @@ class IntArrayTagImpl extends IntArrayList implements IntArrayTag {
   };
 
   public IntArrayTagImpl() {
+    super();
   }
 
   public IntArrayTagImpl(int[] a) {

@@ -190,7 +190,10 @@ class TextTagVisitor implements BinaryTagVisitor, ComponentLike {
     }
 
     unIndent();
-    newLineIndent();
+
+    if (!collapsePrimitiveLists) {
+      newLineIndent();
+    }
 
     builder.append(ARRAY_END);
   }

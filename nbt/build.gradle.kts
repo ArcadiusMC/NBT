@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.1.1"
+version = "1.2.0"
 
 repositories {
   mavenCentral()
@@ -36,7 +36,7 @@ publishing {
       from(components["java"])
 
       pom {
-        name.set("NBT")
+        name.set("nbt")
         description.set("Java NamedBinaryTag library")
         url.set("https://github.com/ForTheCrown/NBT")
 

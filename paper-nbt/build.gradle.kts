@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.1.1"
+version = "1.2.0"
 
 repositories {
   mavenCentral()
@@ -21,7 +21,7 @@ dependencies {
 
   compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
 
-  implementation(project(":"))
+  implementation(project(":nbt"))
 
   paperweight.paperDevBundle("1.19.3-R0.1-SNAPSHOT")
 }
@@ -55,7 +55,7 @@ publishing {
       from(components["java"])
 
       pom {
-        name.set("Paper-NBT")
+        name.set("paper-nbt")
         description.set("Java NamedBinaryTag library for PaperMC")
         url.set("https://github.com/ForTheCrown/NBT")
 

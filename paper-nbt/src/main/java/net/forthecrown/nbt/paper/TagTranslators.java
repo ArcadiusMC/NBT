@@ -150,7 +150,7 @@ interface TagTranslators {
       = new TagTranslator<>() {
     @Override
     public net.minecraft.nbt.IntArrayTag toMinecraft(IntArrayTag apiType) {
-      return new net.minecraft.nbt.IntArrayTag(apiType.toIntArray());
+      return new net.minecraft.nbt.IntArrayTag(apiType);
     }
 
     @Override
@@ -168,7 +168,7 @@ interface TagTranslators {
       = new TagTranslator<>() {
     @Override
     public net.minecraft.nbt.LongArrayTag toMinecraft(LongArrayTag apiType) {
-      return new net.minecraft.nbt.LongArrayTag(apiType.toLongArray());
+      return new net.minecraft.nbt.LongArrayTag(apiType);
     }
 
     @Override

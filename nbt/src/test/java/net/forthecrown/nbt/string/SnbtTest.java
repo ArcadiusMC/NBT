@@ -2,8 +2,10 @@ package net.forthecrown.nbt.string;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import net.forthecrown.nbt.BinaryTag;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
+import net.forthecrown.nbt.IntArrayTag;
 import org.junit.jupiter.api.Test;
 
 class SnbtTest {
@@ -61,7 +63,8 @@ class SnbtTest {
           "string_key": "a string",
           "no_leading_zero": .76980,
           "no_trailing": 8798.,
-          "notation": 7.78e10
+          "notation": 7.78e10,
+          "int_array": [I;1926987268,-428392111,-1786688212,-1396749916]
         }
         """;
 
@@ -69,6 +72,29 @@ class SnbtTest {
       return Snbt.parse(toParse);
     });
 
+    int[] arr = parsed.asCompound().getIntArray("int_array");
+    assertEquals(arr.length, 4);
+    assertEquals(arr[0], 1926987268);
+    assertEquals(arr[1], -428392111);
+    assertEquals(arr[2], -1786688212);
+    assertEquals(arr[3], -1396749916);
+
     System.out.println(Snbt.toString(parsed, true, true));
+  }
+
+  @Test
+  void parseUUID() {
+    BinaryTag tag = assertDoesNotThrow(() -> {
+      return Snbt.parse("[I;1926987268,-428392111,-1786688212,-1396749916]");
+    });
+
+    var tagArray = assertInstanceOf(IntArrayTag.class, tag);
+    var arr = tagArray.toIntArray();
+
+    assertEquals(arr.length, 4);
+    assertEquals(arr[0], 1926987268);
+    assertEquals(arr[1], -428392111);
+    assertEquals(arr[2], -1786688212);
+    assertEquals(arr[3], -1396749916);
   }
 }

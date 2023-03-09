@@ -24,13 +24,11 @@ interface Node {
                               @Nullable Supplier<BinaryTag> supplier
   ) {
     List<BinaryTag> result = new ArrayList<>();
-    System.out.printf("tags.size=%s def=%s\n", tags.size(), supplier == null ? null : supplier.get());
 
     for (var t: tags) {
       get(t, result, supplier);
     }
 
-    System.out.printf("results.size=%s\n", result.size());
     return result;
   }
 
