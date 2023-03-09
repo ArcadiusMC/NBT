@@ -123,7 +123,7 @@ class IntArrayTagImpl extends IntArrayList implements IntArrayTag {
 
   @Override
   public IntArrayTag copy() {
-    return new IntArrayTagImpl(elements().clone());
+    return new IntArrayTagImpl(toIntArray());
   }
 
   @Override

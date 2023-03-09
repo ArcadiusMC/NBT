@@ -82,7 +82,18 @@ class CompoundTagImpl
 
   @Override
   public CompoundTag merge(CompoundTag source) {
-    putAll(source);
+    for (var e: source.entrySet()) {
+      if (e.getValue() instanceof CompoundTag compoundTag) {
+        CompoundTag ours = getCompound(e.getKey());
+        ours.merge(compoundTag);
+
+        put(e.getKey(), ours);
+        continue;
+      }
+
+      put(e.getKey(), e.getValue());
+    }
+
     return this;
   }
 

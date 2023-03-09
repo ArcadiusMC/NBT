@@ -122,7 +122,7 @@ class ByteArrayTagImpl
 
   @Override
   public ByteArrayTagImpl copy() {
-    return new ByteArrayTagImpl(elements().clone());
+    return new ByteArrayTagImpl(toByteArray());
   }
 
   @Override
