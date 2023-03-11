@@ -1,0 +1,4 @@
+name: 'NBT-Test-Plugin'
+main: 'net.forthecrown.nbt.plugin.NbtPlugin'
+version: '${version}'
+api-version: "1.19"

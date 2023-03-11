@@ -17,8 +17,15 @@ import net.forthecrown.nbt.ShortTag;
 import net.forthecrown.nbt.StringTag;
 import net.forthecrown.nbt.TypeIds;
 import net.minecraft.nbt.Tag;
+import org.jetbrains.annotations.ApiStatus.Internal;
 
-interface TagTranslators {
+/**
+ * This API translates between vanilla tags and API types, mostly internal,
+ * however, other projects which also interact with NMS code may need this and
+ * thus shouldn't have to re-write it
+ */
+@Internal
+public interface TagTranslators {
 
   TagTranslator<ByteTag, net.minecraft.nbt.ByteTag> BYTE
       = new TagTranslator<>() {

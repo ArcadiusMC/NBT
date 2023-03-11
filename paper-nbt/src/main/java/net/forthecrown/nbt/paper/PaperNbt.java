@@ -3,6 +3,7 @@ package net.forthecrown.nbt.paper;
 import net.forthecrown.nbt.BinaryTag;
 import net.forthecrown.nbt.CompoundTag;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
@@ -155,6 +156,30 @@ public final class PaperNbt {
    */
   public static void setUnhandledTags(ItemMeta meta, CompoundTag tag) {
     items.setUnhandledTags(meta, tag);
+  }
+
+  /**
+   * Saves the specified metadata of the item. This is pretty much the 'tag'
+   * part of the item's NBT
+   *
+   * @param meta meta to save
+   * @return saved meta
+   */
+  public static CompoundTag saveMeta(ItemMeta meta) {
+    return items.saveMeta(meta);
+  }
+
+  /**
+   * Loads item meta
+   * <p>
+   * This method loads the 'tag' part of an item's NBT data
+   *
+   * @param tag tag to load from
+   * @param material the meta's type
+   * @return Loaded meta
+   */
+  public static ItemMeta loadMeta(CompoundTag tag, Material material) {
+    return items.loadMeta(tag, material);
   }
 
   /* ------------------------- COMPONENT-RELATED -------------------------- */
