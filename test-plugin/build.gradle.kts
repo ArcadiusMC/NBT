@@ -19,18 +19,7 @@ dependencies {
   compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
 
   implementation(project(":nbt"))
-
-  // Hacky-ahh solution because I couldn't get the userdev plugin to
-  // remap the shaded jars, so we have to include the already remapped jar
-  val paperNbt = project(":paper-nbt").dependencyProject
-  implementation(
-    files(
-      paperNbt.buildDir.toPath()
-        .resolve("libs")
-        .resolve("paper-nbt-1.2.1.jar")
-        .toFile()
-    )
-  )
+  implementation(project(":paper-nbt", "reobf"))
 }
 
 tasks {
