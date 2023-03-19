@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.2.2"
+version = "1.3.0"
 
 repositories {
   mavenCentral()
@@ -19,11 +19,11 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
-  compileOnly("io.papermc.paper:paper-api:1.19.3-R0.1-SNAPSHOT")
+  compileOnly("io.papermc.paper:paper-api:1.19.4-R0.1-SNAPSHOT")
 
   implementation(project(":nbt"))
 
-  paperweight.paperDevBundle("1.19.3-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.19.4-R0.1-SNAPSHOT")
 }
 
 tasks {

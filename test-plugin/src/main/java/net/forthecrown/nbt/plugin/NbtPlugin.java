@@ -7,6 +7,7 @@ import net.forthecrown.nbt.paper.PaperNbt;
 import net.forthecrown.nbt.string.Snbt;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -73,6 +74,15 @@ public class NbtPlugin extends JavaPlugin {
         savedMeta.getInt("test_value") == 12,
         "test_value mismatch"
     );
+  }
+
+  void testGeneral() {
+    Material material = Material.STONE_STAIRS;
+    var data = material.createBlockData();
+
+    // Shouldn't throw any exceptions
+    CompoundTag tag = PaperNbt.saveBlockData(data);
+    BlockData loaded = PaperNbt.loadBlockData(tag);
   }
 
   @Override
