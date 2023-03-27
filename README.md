@@ -67,6 +67,6 @@ dependencies {
   implementation("net.forthecrown:nbt:1.2.0")
   
   // If you're using this with PaperMC, you can also include 
-  implementation("net.forthecrown:paper-nbt:1.2.0")
+  implementation("net.forthecrown:paper-nbt:1.2.3")
 }
 ```
