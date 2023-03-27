@@ -10,13 +10,16 @@ import java.util.Map;
 import java.util.Objects;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
+import net.forthecrown.nbt.TagTypes;
 import net.forthecrown.nbt.string.Snbt;
+import net.minecraft.SharedConstants;
 import net.minecraft.nbt.Tag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+@SuppressWarnings("deprecation")
 class ItemNbtProviderImpl implements ItemNbtProvider {
   static ItemNbtProviderImpl INSTANCE = new ItemNbtProviderImpl();
 
@@ -75,6 +78,19 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
 
   @Override
   public ItemStack loadItem(CompoundTag tag) {
+
+    // Assume item is up-to-date if DataVersion tag is missing
+    if (!tag.contains("DataVersion", TagTypes.intType())) {
+      // Do not modify input directly
+      tag = tag.copy();
+
+      tag.putInt("DataVersion",
+          SharedConstants.getCurrentVersion()
+              .getDataVersion()
+              .getVersion()
+      );
+    }
+
     byte[] arr = toArray(tag);
     return Bukkit.getUnsafe().deserializeItem(arr);
   }
@@ -84,6 +100,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
+      @SuppressWarnings("unchecked") // The field is a Map<String, Tag>
       Map<String, Tag> tags = (Map<String, Tag>) unhandledTags.get(meta);
 
       CompoundTag result = BinaryTags.compoundTag();
@@ -102,6 +119,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
+      @SuppressWarnings("unchecked") // The field is a Map<String, Tag>
       Map<String, Tag> tags = (Map<String, Tag>) unhandledTags.get(meta);
       tags.clear();
       tags.putAll(TagTranslators.COMPOUND.toMinecraft(tag).tags);
