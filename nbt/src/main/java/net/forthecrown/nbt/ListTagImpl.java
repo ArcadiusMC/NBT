@@ -13,21 +13,23 @@ import java.util.stream.Collector;
 import net.forthecrown.nbt.io.ScopedDataInput;
 import org.jetbrains.annotations.NotNull;
 
-public class ListTagImpl extends AbstractObjectList<BinaryTag> implements ListTag {
+class ListTagImpl extends AbstractObjectList<BinaryTag> implements ListTag {
   public static final TagType<ListTag> TYPE = new TagType<>() {
     @Override
     public void write(ListTag tag, DataOutput output) throws IOException {
       int size = tag.size();
-      int typeId = tag.listType() == null
+      var listType = tag.listType();
+
+      int typeId = listType == null
           ? TypeIds.END
-          : tag.listType().getId();
+          : listType.getId();
 
       output.writeByte(typeId);
       output.writeInt(size);
 
-      if (!tag.isEmpty()) {
+      if (!tag.isEmpty() && listType != null) {
         @SuppressWarnings("unchecked") // This will always be true
-        TagType<BinaryTag> type = (TagType<BinaryTag>) tag.listType();
+        TagType<BinaryTag> type = (TagType<BinaryTag>) listType;
 
         for (var t: tag) {
           type.write(t, output);
