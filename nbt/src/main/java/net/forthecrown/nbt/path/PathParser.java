@@ -1,7 +1,6 @@
 package net.forthecrown.nbt.path;
 
 import java.io.IOException;
-import java.io.Reader;
 import java.util.function.Predicate;
 import net.forthecrown.nbt.BinaryTag;
 import net.forthecrown.nbt.path.TagPathImpl.BuilderImpl;
@@ -19,8 +18,8 @@ class PathParser {
   private final ReaderWrapper reader;
   private final BuilderImpl builder = new BuilderImpl();
 
-  public PathParser(Reader reader) {
-    this.reader = new ReaderWrapper(reader);
+  public PathParser(ReaderWrapper reader) {
+    this.reader = reader;
   }
 
   public static boolean isValidPathChar(int c) {

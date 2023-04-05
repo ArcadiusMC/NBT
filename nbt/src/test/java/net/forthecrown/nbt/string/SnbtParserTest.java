@@ -2,6 +2,7 @@ package net.forthecrown.nbt.string;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import net.forthecrown.nbt.StringTag;
 import org.junit.jupiter.api.Test;
@@ -34,5 +35,19 @@ public class SnbtParserTest {
     });
 
     assertEquals(tag.size(), 0);
+  }
+
+  @Test
+  void testFail() {
+    String nbt = """
+    {
+      key: 1,
+      key3: 'asasd', key_2 = 2321s
+    }
+    """;
+
+    assertThrows(TagParseException.class, () -> {
+      Snbt.parseCompound(nbt);
+    });
   }
 }

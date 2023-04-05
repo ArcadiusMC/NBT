@@ -119,7 +119,11 @@ public interface BinaryTag {
    * Creates a copy of this tag.
    * <p>
    * Note: Value tags, like {@link StringTag} and {@link IntTag}, will return
-   * {@code this}, as value objects are immutable so copying serves no purpose
+   * {@code this}, as value objects are immutable so copying serves no purpose.
+   * <br>
+   * Non-value types like {@link CompoundTag} and {@link ListTag} will create a
+   * deep copy of the tag by copying over each element contained in them by
+   * calling method.
    *
    * @return Copy of this tag
    */

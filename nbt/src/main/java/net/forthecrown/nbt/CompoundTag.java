@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
-import net.forthecrown.nbt.string.Snbt;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -222,6 +221,14 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    */
   CompoundTag merge(CompoundTag source);
 
+  /**
+   * Produces a copy of this compound tag.
+   * <p>
+   * All tags contained in this compound are copied over to the resulting that
+   * with {@link BinaryTag#copy()}
+   *
+   * @return Deep copy of this compound tag
+   */
   @Override
   CompoundTag copy();
 

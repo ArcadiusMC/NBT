@@ -24,6 +24,14 @@ public interface ListTag extends CollectionTag, List<BinaryTag> {
    */
   ListTag merge(ListTag other);
 
+  /**
+   * Produces a copy of this tag
+   * <p>
+   * All tags contained in this list are copied over to the resulting list with
+   * {@link BinaryTag#copy()}
+   *
+   * @return Copied list
+   */
   @Override
   ListTag copy();
 

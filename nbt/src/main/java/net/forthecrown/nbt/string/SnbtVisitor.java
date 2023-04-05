@@ -65,15 +65,19 @@ class SnbtVisitor implements BinaryTagVisitor {
 
   @Override
   public void visitString(StringTag tag) {
+    appendQuoted(tag.value());
+  }
+
+  private void appendQuoted(String s) {
     builder.append(STR_QUOTE)
-        .append(escape(tag.value()))
+        .append(escape(s))
         .append(STR_QUOTE);
   }
 
   private String escape(String s) {
     return s
-        .replace("\"", "\\\"")
-        .replace("'", "\\'");
+        .replace("\\", "\\\\")
+        .replace(STR_QUOTE + "", "\\" + STR_QUOTE);
   }
 
   @Override
@@ -215,9 +219,7 @@ class SnbtVisitor implements BinaryTagVisitor {
       if (ReaderWrapper.isValidWord(key)) {
         builder.append(key);
       } else {
-        builder.append(STR_QUOTE)
-            .append(key)
-            .append(STR_QUOTE);
+        appendQuoted(key);
       }
 
       builder.append(ASSIGNMENT)

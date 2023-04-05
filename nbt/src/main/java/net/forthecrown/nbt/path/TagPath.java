@@ -1,7 +1,6 @@
 package net.forthecrown.nbt.path;
 
 import java.io.Reader;
-import java.io.StringReader;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -10,6 +9,7 @@ import java.util.function.Supplier;
 import net.forthecrown.nbt.BinaryTag;
 import net.forthecrown.nbt.path.TagPathImpl.BuilderImpl;
 import net.forthecrown.nbt.string.TagParseException;
+import net.forthecrown.nbt.util.ReaderWrapper;
 import net.forthecrown.nbt.util.TagPredicate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -111,7 +111,7 @@ public interface TagPath {
   static TagPath parse(@NotNull String string)
       throws PathParseException, TagParseException
   {
-    return parse(new StringReader(string));
+    return new PathParser(new ReaderWrapper(string)).parse();
   }
 
   /**
@@ -126,7 +126,7 @@ public interface TagPath {
   static TagPath parse(@NotNull Reader reader)
       throws PathParseException, TagParseException
   {
-    return new PathParser(reader).parse();
+    return new PathParser(new ReaderWrapper(reader)).parse();
   }
 
   /**

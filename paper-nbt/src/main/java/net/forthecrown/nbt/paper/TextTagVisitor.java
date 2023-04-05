@@ -101,9 +101,17 @@ class TextTagVisitor implements BinaryTagVisitor, ComponentLike {
 
   @Override
   public void visitString(StringTag tag) {
+    appendQuoted(tag.value(), STRING_STYLE);
+  }
+
+  private void appendQuoted(String s, Style style) {
     builder.append(STRING_QUOTE)
-        .append(text(tag.value(), STRING_STYLE))
+        .append(text(escapeString(s), style))
         .append(STRING_QUOTE);
+  }
+
+  private String escapeString(String s) {
+    return s.replace("\\", "\\\\").replace("'", "\\'");
   }
 
   @Override
@@ -245,9 +253,7 @@ class TextTagVisitor implements BinaryTagVisitor, ComponentLike {
       if (ReaderWrapper.isValidWord(key)) {
         builder.append(text(key, KEY_STYLE));
       } else {
-        builder.append(STRING_QUOTE)
-            .append(text(key, KEY_STYLE))
-            .append(STRING_QUOTE);
+        appendQuoted(key, KEY_STYLE);
       }
 
       builder.append(ASSIGNMENT).appendSpace();

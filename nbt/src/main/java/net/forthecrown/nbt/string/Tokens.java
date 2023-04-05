@@ -2,7 +2,7 @@ package net.forthecrown.nbt.string;
 
 class Tokens {
   static final char
-      STR_QUOTE       = '"',
+      STR_QUOTE       = '\'',
 
       ASSIGNMENT      = ':',
       COMMA           = ',',

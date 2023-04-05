@@ -32,6 +32,7 @@ class SnbtTest {
     tag.put("strings", BinaryTags.stringList("string_1", "string_2"));
     tag.put("empty_list", BinaryTags.listTag());
     tag.putString("escaped_string", "String\"Escaped");
+    tag.putString("different_escape", "aaa\\bbb");
     tag.putDouble("double", 1.232355342D);
 
     CompoundTag nested = BinaryTags.compoundTag();
@@ -43,6 +44,7 @@ class SnbtTest {
 
     String nbtString = Snbt.toString(tag, true, true);
 
+    System.out.println("nbtString:");
     System.out.println(nbtString);
 
     CompoundTag parsed = assertDoesNotThrow(() -> {

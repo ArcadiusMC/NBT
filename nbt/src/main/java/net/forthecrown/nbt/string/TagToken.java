@@ -4,43 +4,29 @@ import net.forthecrown.nbt.TagTypes;
 
 record TagToken(Type type, String value, Number number) {
 
-  String context() {
-    return String.format("val=%s, number=%s", value, number);
-  }
-
-  @Override
-  public String toString() {
-    return String.format("%s[type=%s, value='%s', number=%s]",
-        getClass().getSimpleName(),
-        type,
-        value.replaceAll("\n", ""),
-        number
-    );
-  }
-
   enum Type {
-    ARRAY_OPEN (Tokens.ARRAY_START),
-    ARRAY_CLOSE (Tokens.ARRAY_END),
+    ARRAY_OPEN      (Tokens.ARRAY_START),
+    ARRAY_CLOSE     (Tokens.ARRAY_END),
     BYTE_ARRAY_OPEN ("[B;"),
-    INT_ARRAY_OPEN ("[I;"),
+    INT_ARRAY_OPEN  ("[I;"),
     LONG_ARRAY_OPEN ("[L;"),
 
-    COMPOUND_OPEN (Tokens.COMPOUND_START),
-    COMPOUND_CLOSE (Tokens.COMPOUND_END),
+    COMPOUND_OPEN   (Tokens.COMPOUND_START),
+    COMPOUND_CLOSE  (Tokens.COMPOUND_END),
 
-    BYTE (TagTypes.byteType().getName()),
-    SHORT (TagTypes.shortType().getName()),
-    INT (TagTypes.intType().getName()),
-    LONG (TagTypes.longType().getName()),
-    FLOAT (TagTypes.floatType().getName()),
-    DOUBLE (TagTypes.doubleType().getName()),
+    BYTE            (TagTypes.byteType().getName()),
+    SHORT           (TagTypes.shortType().getName()),
+    INT             (TagTypes.intType().getName()),
+    LONG            (TagTypes.longType().getName()),
+    FLOAT           (TagTypes.floatType().getName()),
+    DOUBLE          (TagTypes.doubleType().getName()),
 
-    STRING (TagTypes.stringType().getName()),
+    STRING          (TagTypes.stringType().getName()),
 
-    COMMA (Tokens.COMMA),
-    ASSIGNMENT (Tokens.ASSIGNMENT),
+    COMMA           (Tokens.COMMA),
+    ASSIGNMENT      (Tokens.ASSIGNMENT),
 
-    EOF ("<EOF>"),
+    EOF             ("<EOF>"),
     ;
 
     private final String name;
@@ -76,7 +62,7 @@ record TagToken(Type type, String value, Number number) {
 
     @Override
     public String toString() {
-      return name;
+      return name.length() == 1 ? "'" + name + "'" : name;
     }
   }
 }

@@ -2,6 +2,7 @@ package net.forthecrown.nbt.util;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
 import java.util.Objects;
 import java.util.function.IntPredicate;
 import java.util.regex.Pattern;
@@ -10,20 +11,29 @@ public class ReaderWrapper {
 
   // -1 = EOF, so -2 is reserved for no peek for the 'peeked' field
   static final int NO_PEEK = -2;
-  static final int CONTEXT_LENGTH = 35;
+  static final int EOF = -1;
+  static final int MAX_CONTEXT = 50;
 
-  private static final Pattern VALID_WORD
-      = Pattern.compile("[a-zA-Z0-9+_.-]+");
+  private static final Pattern VALID_WORD = Pattern.compile("[a-zA-Z0-9+_.-]+");
 
   private final Reader reader;
   private int peeked = NO_PEEK;
 
   private int position;
   private final StringBuilder context = new StringBuilder();
+
   private final StringBuilder input = new StringBuilder();
+  private boolean inputOverriden = false;
 
   public ReaderWrapper(Reader reader) {
     this.reader = Objects.requireNonNull(reader);
+  }
+
+  public ReaderWrapper(String string) {
+    Objects.requireNonNull(string);
+
+    this.reader = new StringReader(string);
+    setInput(string);
   }
 
   /**
@@ -72,13 +82,20 @@ public class ReaderWrapper {
   }
 
   /**
-   * Gets the last {@link #CONTEXT_LENGTH} characters to provide some context
-   * for error messages.
+   * Gets the context for error messages.
+   * <p>
+   * Note: This will only include the last full line with a maximum of
+   * {@link #MAX_CONTEXT} characters.
    *
    * @return Context
    */
   public StringBuilder getContext() {
-    return context;
+    if (context.length() <= MAX_CONTEXT) {
+      return context;
+    }
+
+    int start = context.length() - MAX_CONTEXT;
+    return new StringBuilder(context.subSequence(start, context.length()));
   }
 
   /**
@@ -94,6 +111,12 @@ public class ReaderWrapper {
     return input.toString();
   }
 
+  public void setInput(String str) {
+    input.delete(0, input.length());
+    input.append(str);
+    inputOverriden = true;
+  }
+
   /**
    * Expects the specified character
    * @param c The character to expect
@@ -104,7 +127,7 @@ public class ReaderWrapper {
     int read = read();
 
     if (read != c) {
-      String charName = read == -1 ? "EOF" : Character.toString(read);
+      String charName = read == EOF ? "EOF" : Character.toString(read);
 
       throw new IOException(
           "Expected '" + Character.toString(c) + "', found '" + charName + "'"
@@ -120,7 +143,7 @@ public class ReaderWrapper {
    * Otherwise, this either returns {@link #peeked} or reads a single character
    * from the underlying reader and sets {@link #peeked} to be that value
    *
-   * @return Peeked character, or -1, if EOF has been encountered
+   * @return Peeked character, or {@link #EOF}, if EOF has been encountered
    * @throws IOException If an IO error occurs
    */
   public int peek() throws IOException {
@@ -159,22 +182,22 @@ public class ReaderWrapper {
   private int readInternal() throws IOException {
     int read = reader.read();
 
-    if (read == -1) {
+    if (read == EOF) {
       return read;
     }
 
-    input.appendCodePoint(read);
-
-    if (read == '\n' || read == '\r' || read == ' ') {
-      return read;
+    if (!inputOverriden) {
+      input.appendCodePoint(read);
     }
 
     position++;
-    context.appendCodePoint(read);
-    if (context.length() > CONTEXT_LENGTH) {
-      context.delete(0, context.length() - CONTEXT_LENGTH);
+
+    if (read == '\n' || read == '\r') {
+      context.delete(0, context.length());
+      return read;
     }
 
+    context.appendCodePoint(read);
     return read;
   }
 
@@ -203,7 +226,7 @@ public class ReaderWrapper {
   {
     StringBuilder builder = new StringBuilder();
 
-    while (peek() != -1 && characterPredicate.test(peek())) {
+    while (peek() != EOF && characterPredicate.test(peek())) {
       builder.appendCodePoint(read());
     }
 
@@ -231,7 +254,9 @@ public class ReaderWrapper {
    * translated, every other escape remains as a string literal.
    * <p>
    * <b>Note</b>: This method expects the quote char to already have been read,
-   * so this method doesn't check if the input begins with a quote character
+   * so this method doesn't check if the input begins with a quote character.
+   * But if it does start with the specified {@code quoteChar}, then it
+   * instantly stops reading.
    *
    * @param quoteChar Character to use as a quote
    * @return Read String
@@ -243,30 +268,31 @@ public class ReaderWrapper {
     boolean escaped = false;
 
     while (true) {
-      codePoint = peek();
+      codePoint = read();
 
-      if (escaped) {
-        if (codePoint == quoteChar) {
+      if (codePoint == quoteChar) {
+        if (escaped) {
           builder.appendCodePoint(quoteChar);
-          read();
           escaped = false;
-
           continue;
         }
 
-        builder.append("\\");
-        escaped = false;
-      }
-
-      read();
-
-      if (codePoint == quoteChar) {
         break;
       }
 
       if (codePoint == '\\') {
-        escaped = true;
+        if (escaped) {
+          builder.append('\\');
+          escaped = false;
+        } else {
+          escaped = true;
+        }
+
         continue;
+      }
+
+      if (escaped) {
+        throw new IOException("Invalid escape character: '%c'".formatted(codePoint));
       }
 
       builder.appendCodePoint(codePoint);
@@ -281,7 +307,7 @@ public class ReaderWrapper {
    * @see Character#isWhitespace(int) What qualifies as 'whitespace'
    */
   public void skipEmpty() throws IOException {
-    while (peek() != -1 && Character.isWhitespace(peek())) {
+    while (peek() != EOF && Character.isWhitespace(peek())) {
       read();
     }
   }

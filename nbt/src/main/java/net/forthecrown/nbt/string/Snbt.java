@@ -81,7 +81,7 @@ public final class Snbt {
    * @see #parse(ReaderWrapper)
    */
   public static BinaryTag parse(String input) throws TagParseException {
-    return parse(new StringReader(input));
+    return parse(new ReaderWrapper(input));
   }
 
   /**
@@ -116,7 +116,7 @@ public final class Snbt {
   public static CompoundTag parseCompound(String input)
       throws TagParseException
   {
-    return parseCompound(new StringReader(input));
+    return parseCompound(new ReaderWrapper(input));
   }
 
   public static CompoundTag parseCompound(Reader reader)

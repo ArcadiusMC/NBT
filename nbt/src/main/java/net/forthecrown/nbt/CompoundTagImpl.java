@@ -19,6 +19,12 @@ class CompoundTagImpl
     public void write(CompoundTag tag, DataOutput output) throws IOException {
       var entries = tag.entrySet();
       for (var e: entries) {
+
+        // Do NOT write end tags that somehow end up in the compound
+        if (e.getValue().getId() == END) {
+          continue;
+        }
+
         BinaryTags.writeNamedTag(e, output);
       }
 
