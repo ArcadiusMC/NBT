@@ -52,7 +52,7 @@ import org.jetbrains.annotations.Nullable;
  * CompoundTag itemData = // ...
  *
  * List&lt;BinaryTag&gt; tags = path.get(itemData);
- * assert tags.size() < 2;
+ * assert tags.size() &lt; 2;
  *
  * System.out.println(tags.get(0));
  * </pre>
