@@ -1,5 +1,7 @@
 package net.forthecrown.nbt.plugin;
 
+import com.google.common.base.Preconditions;
+import java.util.Objects;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import net.forthecrown.nbt.paper.ItemNbtProvider;
@@ -7,9 +9,13 @@ import net.forthecrown.nbt.paper.PaperNbt;
 import net.forthecrown.nbt.string.Snbt;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.persistence.PersistentDataAdapterContext;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NbtPlugin extends JavaPlugin {
@@ -39,6 +45,7 @@ public class NbtPlugin extends JavaPlugin {
 
     testItemLoad();
     testGeneral();
+    testDataContainer();
   }
 
   void testItemLoad() {
@@ -84,6 +91,27 @@ public class NbtPlugin extends JavaPlugin {
     // Shouldn't throw any exceptions
     CompoundTag tag = PaperNbt.saveBlockData(data);
     BlockData loaded = PaperNbt.loadBlockData(tag);
+  }
+
+  void testDataContainer() {
+    ItemStack item = new ItemStack(Material.STONE, 1);
+    ItemMeta meta = item.getItemMeta();
+
+    PersistentDataContainer container = meta.getPersistentDataContainer();
+    PersistentDataAdapterContext ctx = container.getAdapterContext();
+
+    container.set(NamespacedKey.fromString("test:test_value"), PersistentDataType.INTEGER, 12);
+
+    // If everything is good, this shouldn't throw exceptions
+    CompoundTag tag = PaperNbt.fromDataContainer(container);
+    PersistentDataContainer container1 = PaperNbt.toDataContainer(tag, ctx);
+
+    Preconditions.checkState(
+        Objects.equals(container1, container),
+
+        "Container objects not equal! container=%s, container1=%s",
+        container, container1
+    );
   }
 
   @Override

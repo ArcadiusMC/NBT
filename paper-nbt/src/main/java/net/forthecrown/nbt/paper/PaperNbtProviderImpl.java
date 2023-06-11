@@ -97,7 +97,12 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
       PersistentDataAdapterContext context
   ) {
     PersistentDataContainer container = context.newPersistentDataContainer();
-    Reflect.invokeHandle(pdc_putAll, container, TagTranslators.COMPOUND.toMinecraft(tag));
+    mergeToContainer(container, tag);
     return container;
+  }
+
+  @Override
+  public void mergeToContainer(PersistentDataContainer container, CompoundTag tag) {
+    Reflect.invokeHandle(pdc_putAll, container, TagTranslators.COMPOUND.toMinecraft(tag));
   }
 }

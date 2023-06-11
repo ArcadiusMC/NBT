@@ -110,6 +110,16 @@ public final class PaperNbt {
     return tags.toDataContainer(tag, context);
   }
 
+  /**
+   * Puts all entries in the specified {@code tag} into the specified {@code container}
+   *
+   * @param container Container to insert entries into
+   * @param tag Tag to take values from
+   */
+  public static void mergeToContainer(PersistentDataContainer container, CompoundTag tag) {
+    tags.mergeToContainer(container, tag);
+  }
+
   /* ----------------------------- ITEM DATA ------------------------------ */
 
   /**

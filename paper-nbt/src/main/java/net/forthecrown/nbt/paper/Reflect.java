@@ -63,7 +63,7 @@ final class Reflect {
 
   static <T> T invokeHandle(MethodHandle handle, Object... args) {
     try {
-      Object o = handle.invoke(args);
+      Object o = handle.invokeWithArguments(args);
       return (T) o;
     } catch (Throwable t) {
       Throwable cause;
@@ -76,17 +76,5 @@ final class Reflect {
 
       throw new RuntimeException(cause);
     }
-  }
-
-  static <T> T invokeReflective(ReflectiveOp<T> op) {
-    try {
-      return op.run();
-    } catch (ReflectiveOperationException exc) {
-      throw new RuntimeException(exc);
-    }
-  }
-
-  interface ReflectiveOp<T> {
-    T run() throws ReflectiveOperationException;
   }
 }

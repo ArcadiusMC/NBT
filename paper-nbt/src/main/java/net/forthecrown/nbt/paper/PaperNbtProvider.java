@@ -32,4 +32,6 @@ public interface PaperNbtProvider {
       CompoundTag tag,
       PersistentDataAdapterContext context
   );
+
+  void mergeToContainer(PersistentDataContainer container, CompoundTag tag);
 }
