@@ -192,6 +192,7 @@ public class ReaderWrapper {
 
     position++;
 
+    // If new line, wipe all context
     if (read == '\n' || read == '\r') {
       context.delete(0, context.length());
       return read;
@@ -269,6 +270,10 @@ public class ReaderWrapper {
 
     while (true) {
       codePoint = read();
+
+      if (codePoint == EOF) {
+        throw new IOException("End of input while inside quoted string");
+      }
 
       if (codePoint == quoteChar) {
         if (escaped) {

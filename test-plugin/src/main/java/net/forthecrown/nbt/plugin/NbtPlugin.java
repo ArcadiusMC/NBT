@@ -38,6 +38,7 @@ public class NbtPlugin extends JavaPlugin {
     );
 
     testItemLoad();
+    testGeneral();
   }
 
   void testItemLoad() {

@@ -12,10 +12,10 @@ import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import net.forthecrown.nbt.TagTypes;
 import net.forthecrown.nbt.string.Snbt;
-import net.minecraft.SharedConstants;
 import net.minecraft.nbt.Tag;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.UnsafeValues;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -78,17 +78,13 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
 
   @Override
   public ItemStack loadItem(CompoundTag tag) {
+    UnsafeValues unsafe = Bukkit.getUnsafe();
 
     // Assume item is up-to-date if DataVersion tag is missing
     if (!tag.contains("DataVersion", TagTypes.intType())) {
       // Do not modify input directly
       tag = tag.copy();
-
-      tag.putInt("DataVersion",
-          SharedConstants.getCurrentVersion()
-              .getDataVersion()
-              .getVersion()
-      );
+      tag.putInt("DataVersion", unsafe.getDataVersion());
     }
 
     byte[] arr = toArray(tag);

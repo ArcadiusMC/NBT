@@ -14,5 +14,9 @@ class ListTagTest {
     assertEquals(stringList.size(), 3);
 
     assertFalse(stringList.add(BinaryTags.intTag(12)));
+
+    String str = stringList.getString(1);
+    assertNotNull(str);
+    assertNull(stringList.getDoubleArray(1));
   }
 }

@@ -1,5 +1,6 @@
 package net.forthecrown.nbt.paper;
 
+import java.lang.invoke.MethodHandle;
 import net.forthecrown.nbt.CompoundTag;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.Registry;
@@ -9,16 +10,27 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.dedicated.DedicatedServer;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_19_R3.block.CraftBlockEntityState;
-import org.bukkit.craftbukkit.v1_19_R3.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_19_R3.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_19_R3.persistence.CraftPersistentDataContainer;
+import org.bukkit.craftbukkit.v1_20_R1.block.CraftBlockEntityState;
+import org.bukkit.craftbukkit.v1_20_R1.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 
 class PaperNbtProviderImpl implements PaperNbtProvider {
   static final PaperNbtProviderImpl INSTANCE = new PaperNbtProviderImpl();
+
+  // pdc: PersistentDataContainer
+  static final MethodHandle pdc_putAll;
+  static final MethodHandle pdc_toTagCompound;
+
+  static {
+    Class<?> craftClass = Reflect.getCraftBukkitClass("persistence.CraftPersistentDataContainer");
+    Class vanillaCompoundClass = net.minecraft.nbt.CompoundTag.class;
+
+    pdc_putAll = Reflect.findHandle(craftClass, "putAll", Void.TYPE, vanillaCompoundClass);
+    pdc_toTagCompound = Reflect.findHandle(craftClass, "toTagCompound", vanillaCompoundClass);
+  }
 
   private static <T> HolderGetter<T> lookup(
       ResourceKey<? extends Registry<? extends T>> key
@@ -75,8 +87,8 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
 
   @Override
   public CompoundTag fromDataContainer(PersistentDataContainer container) {
-    CraftPersistentDataContainer c = (CraftPersistentDataContainer) container;
-    return TagTranslators.COMPOUND.toApiType(c.toTagCompound());
+    net.minecraft.nbt.CompoundTag vanillaTag = Reflect.invokeHandle(pdc_toTagCompound, container);
+    return TagTranslators.COMPOUND.toApiType(vanillaTag);
   }
 
   @Override
@@ -84,10 +96,8 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
       CompoundTag tag,
       PersistentDataAdapterContext context
   ) {
-    CraftPersistentDataContainer container
-        = (CraftPersistentDataContainer) context.newPersistentDataContainer();
-
-    container.putAll(TagTranslators.COMPOUND.toMinecraft(tag));
+    PersistentDataContainer container = context.newPersistentDataContainer();
+    Reflect.invokeHandle(pdc_putAll, container, TagTranslators.COMPOUND.toMinecraft(tag));
     return container;
   }
 }

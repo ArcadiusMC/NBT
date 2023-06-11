@@ -114,8 +114,24 @@ class ListTagImpl extends AbstractObjectList<BinaryTag> implements ListTag {
   }
 
   private boolean testType(BinaryTag tag) {
+    return typeMatches(tag.getType());
+  }
+
+  @Override
+  public boolean typeMatches(TagType<?> type) {
     var listType = listType();
-    return listType == null || listType.getId() == tag.getId();
+    return listType == null || listType.getId() == type.getId();
+  }
+
+  @Override
+  public <T extends BinaryTag> T get(int index, TagType<T> type) {
+    Objects.checkIndex(index, size());
+
+    if (!typeMatches(type)) {
+      return null;
+    }
+
+    return (T) get(index);
   }
 
   public ListTag merge(ListTag other) {
