@@ -246,6 +246,18 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    */
   <T extends BinaryTag> @Nullable T get(String name, TagType<T> type);
 
+  default NumberTag getNumber(String name) {
+    BinaryTag tag = get(name);
+    if (!(tag instanceof NumberTag number)) {
+      return null;
+    }
+    return number;
+  }
+
+  default Optional<NumberTag> getNumberOptional(String name) {
+    return Optional.of(getNumber(name));
+  }
+
   /**
    * Delegate for {@link #get(String, TagType)} which returns an {@link Optional}
    *
@@ -255,10 +267,7 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    *         no matching mapping existed
    * @see #get(String, TagType)
    */
-  default <T extends BinaryTag> Optional<T> getOptional(
-      String name,
-      TagType<T> type
-  ) {
+  default <T extends BinaryTag> Optional<T> getOptional(String name, TagType<T> type) {
     return Optional.ofNullable(get(name, type));
   }
 
@@ -336,8 +345,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code byte} or {@code def}
    */
   default byte getByte(String name, int def) {
-    return getOptional(name, TagTypes.byteType())
-        .map(ByteTag::byteValue)
+    return getNumberOptional(name)
+        .map(NumberTag::byteValue)
         .orElse((byte) def);
   }
 
@@ -362,8 +371,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code short} or {@code def}
    */
   default short getShort(String name, int def) {
-    return getOptional(name, TagTypes.shortType())
-        .map(ShortTag::shortValue)
+    return getNumberOptional(name)
+        .map(NumberTag::shortValue)
         .orElse((short) def);
   }
 
@@ -388,8 +397,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code int} or {@code def}
    */
   default int getInt(String name, int def) {
-    return getOptional(name, TagTypes.intType())
-        .map(IntTag::intValue)
+    return getNumberOptional(name)
+        .map(NumberTag::intValue)
         .orElse(def);
   }
 
@@ -414,8 +423,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code long} or {@code def}
    */
   default long getLong(String name, long def) {
-    return getOptional(name, TagTypes.longType())
-        .map(LongTag::longValue)
+    return getNumberOptional(name)
+        .map(NumberTag::longValue)
         .orElse(def);
   }
 
@@ -440,8 +449,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code float} or {@code def}
    */
   default float getFloat(String name, float def) {
-    return getOptional(name, TagTypes.floatType())
-        .map(FloatTag::floatValue)
+    return getNumberOptional(name)
+        .map(NumberTag::floatValue)
         .orElse(def);
   }
 
@@ -466,8 +475,8 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return The gotten {@code double} or {@code def}
    */
   default double getDouble(String name, double def) {
-    return getOptional(name, TagTypes.doubleType())
-        .map(DoubleTag::doubleValue)
+    return getNumberOptional(name)
+        .map(NumberTag::doubleValue)
         .orElse(def);
   }
 
