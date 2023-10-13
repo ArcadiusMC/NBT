@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.4.0"
+version = "1.5.0"
 
 repositories {
   mavenCentral()
@@ -19,11 +19,9 @@ dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
-  compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
-
   implementation(project(":nbt"))
 
-  paperweight.paperDevBundle("1.20-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -53,6 +51,11 @@ publishing {
   publications {
     create<MavenPublication>("maven") {
       from(components["java"])
+
+      artifact("build/libs/${project.name}-$version.jar") {
+        classifier = "reobf"
+        extension = "jar"
+      }
 
       pom {
         name.set("paper-nbt")

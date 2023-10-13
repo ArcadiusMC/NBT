@@ -51,11 +51,20 @@ TagPath path = TagPath.builder()
 ## Dependency info
 Maven:
 ```xml
-<dependency>
+<dependencies>
+  <dependency>
     <groupId>net.forthecrown</groupId>
-    <artifactId>NBT</artifactId>
+    <artifactId>nbt</artifactId>
     <version>LATEST</version>
-</dependency>
+  </dependency>
+
+  <!-- If you're using this with PaperMC, you can also include -->
+  <dependency>
+    <groupId>net.forthecrown</groupId>
+    <artifactId>paper-nbt</artifactId>
+    <version>LATEST</version>
+  </dependency>
+</dependencies>
 ```
 Gradle:
 ```kotlin
@@ -64,9 +73,9 @@ repositories {
 }
 
 dependencies {
-  implementation("net.forthecrown:nbt:1.4.0")
+  implementation("net.forthecrown:nbt:1.5.0")
   
   // If you're using this with PaperMC, you can also include 
-  implementation("net.forthecrown:paper-nbt:1.4.0")
+  implementation("net.forthecrown:paper-nbt:1.5.0")
 }
 ```
