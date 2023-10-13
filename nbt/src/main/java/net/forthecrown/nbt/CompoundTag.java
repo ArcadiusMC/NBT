@@ -246,6 +246,13 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    */
   <T extends BinaryTag> @Nullable T get(String name, TagType<T> type);
 
+  /**
+   * Gets a numeric tag associated with the {@code name} mapping. If the value doesn't exist, or
+   * the value's type is non-numeric, then {@code null} is returned.
+   *
+   * @param name name of the mapping
+   * @return Numeric tag, or {@code null}, if not present or if the value is non-numeric
+   */
   default NumberTag getNumber(String name) {
     BinaryTag tag = get(name);
     if (!(tag instanceof NumberTag number)) {
@@ -254,6 +261,11 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
     return number;
   }
 
+  /**
+   * Delegate for {@link #getNumber(String)} which wraps the result in an optional
+   * @param name name of the mapping
+   * @return Optional numeric value. Empty if not present or if the value was non-numeric
+   */
   default Optional<NumberTag> getNumberOptional(String name) {
     return Optional.of(getNumber(name));
   }
