@@ -28,7 +28,7 @@ BinaryTag tag = // Get a tag
 String output = Snbt.toString(tag);
 ```
 ## Tag Paths
-Minecraft wiki: https://minecraft.fandom.com/wiki/NBT_path_format  
+Minecraft wiki: https://minecraft.wiki/w/NBT_path_format  
 NBT paths can be created and used like so:
 ```java
 import net.forthecrown.nbt.path.TagPath
