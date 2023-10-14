@@ -267,7 +267,7 @@ public interface CompoundTag extends TagStructure, Map<String, BinaryTag> {
    * @return Optional numeric value. Empty if not present or if the value was non-numeric
    */
   default Optional<NumberTag> getNumberOptional(String name) {
-    return Optional.of(getNumber(name));
+    return Optional.ofNullable(getNumber(name));
   }
 
   /**
