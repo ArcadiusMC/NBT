@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.5.0"
+version = "1.6.0"
 
 repositories {
   mavenCentral()
@@ -21,7 +21,7 @@ dependencies {
 
   implementation(project(":nbt"))
 
-  paperweight.paperDevBundle("1.20.2-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
 }
 
 tasks {
