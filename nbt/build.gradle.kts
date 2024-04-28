@@ -25,7 +25,7 @@ tasks {
   }
 
   compileJava {
-    options.release = 22
+    options.release = 21
   }
 
   java {

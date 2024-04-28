@@ -1,3 +1,5 @@
+import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
+
 plugins {
   id("java")
   id("io.papermc.paperweight.userdev") version "1.6.0"
@@ -7,7 +9,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.7.0"
+version = "1.7.1"
 
 repositories {
   mavenCentral()
@@ -25,8 +27,8 @@ dependencies {
 }
 
 tasks {
-  assemble {
-    dependsOn(reobfJar)
+  compileJava {
+    options.release = 21
   }
 
   java {
@@ -47,25 +49,17 @@ java {
   toolchain.languageVersion.set(JavaLanguageVersion.of(22))
 }
 
+paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
+
 publishing {
   publications {
     create<MavenPublication>("maven") {
       from(components["java"])
 
-      artifact("build/libs/${project.name}-$version.jar") {
-        classifier = "reobf"
-        extension = "jar"
-      }
-
       pom {
         name.set("paper-nbt")
         description.set("Java NamedBinaryTag library for PaperMC")
         url.set("https://github.com/ArcadiusMC/NBT")
-
-        val jarPath = buildDir.path + "/libs/${project.name}-${project.version}.jar"
-        val jarFile = file(jarPath)
-
-        artifact(jarFile)
 
         licenses {
           license {

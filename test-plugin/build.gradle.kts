@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.5.0"
+version = "1.6.0"
 
 repositories {
   mavenCentral()
@@ -19,7 +19,7 @@ dependencies {
   compileOnly("io.papermc.paper:paper-api:1.20.5-R0.1-SNAPSHOT")
 
   implementation(project(":nbt"))
-  implementation(project(":paper-nbt", "reobf"))
+  implementation(project(":paper-nbt"))
 }
 
 tasks {
