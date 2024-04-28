@@ -1,18 +1,18 @@
 plugins {
   id("java")
-  id("io.papermc.paperweight.userdev") version "1.5.5"
+  id("io.papermc.paperweight.userdev") version "1.6.0"
 
   id("maven-publish")
   id("signing")
 }
 
 group = "net.forthecrown"
-version = "1.6.0"
+version = "1.7.0"
 
 repositories {
   mavenCentral()
-
-  maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+  maven("https://repo.papermc.io/repository/maven-public/")
+  maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
@@ -21,7 +21,7 @@ dependencies {
 
   implementation(project(":nbt"))
 
-  paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.20.5-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -44,7 +44,7 @@ tasks {
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+  toolchain.languageVersion.set(JavaLanguageVersion.of(22))
 }
 
 publishing {
@@ -60,7 +60,7 @@ publishing {
       pom {
         name.set("paper-nbt")
         description.set("Java NamedBinaryTag library for PaperMC")
-        url.set("https://github.com/ForTheCrown/NBT")
+        url.set("https://github.com/ArcadiusMC/NBT")
 
         val jarPath = buildDir.path + "/libs/${project.name}-${project.version}.jar"
         val jarFile = file(jarPath)
@@ -70,7 +70,7 @@ publishing {
         licenses {
           license {
             name.set("MIT License")
-            url.set("https://raw.githubusercontent.com/ForTheCrown/NBT/main/LICENSE.md")
+            url.set("https://raw.githubusercontent.com/ArcadiusMC/NBT/main/LICENSE.md")
           }
         }
 
@@ -82,8 +82,8 @@ publishing {
         }
 
         scm {
-          connection.set("scm:git:git:github.com/ForTheCrown/NBT/.git")
-          developerConnection.set("scm:git:ssh://github.com/ForTheCrown/NBT/.git")
+          connection.set("scm:git:git:github.com/ArcadiusMC/NBT/.git")
+          developerConnection.set("scm:git:ssh://github.com/ArcadiusMC/NBT/.git")
           url.set("https://github.com/ForTheCrown/NBT")
         }
       }

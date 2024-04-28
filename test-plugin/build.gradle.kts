@@ -8,15 +8,15 @@ version = "1.5.0"
 
 repositories {
   mavenCentral()
-
-  maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
+  maven("https://repo.papermc.io/repository/maven-public/")
+  maven("https://s01.oss.sonatype.org/content/repositories/snapshots/")
 }
 
 dependencies {
   testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 
-  compileOnly("io.papermc.paper:paper-api:1.20-R0.1-SNAPSHOT")
+  compileOnly("io.papermc.paper:paper-api:1.20.5-R0.1-SNAPSHOT")
 
   implementation(project(":nbt"))
   implementation(project(":paper-nbt", "reobf"))
@@ -29,5 +29,5 @@ tasks {
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+  toolchain.languageVersion.set(JavaLanguageVersion.of(22))
 }

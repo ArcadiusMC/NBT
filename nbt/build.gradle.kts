@@ -24,10 +24,18 @@ tasks {
     useJUnitPlatform()
   }
 
+  compileJava {
+    options.release = 22
+  }
+
   java {
     withSourcesJar()
     withJavadocJar()
   }
+}
+
+java {
+  toolchain.languageVersion.set(JavaLanguageVersion.of(22))
 }
 
 publishing {
@@ -38,12 +46,12 @@ publishing {
       pom {
         name.set("nbt")
         description.set("Java NamedBinaryTag library")
-        url.set("https://github.com/ForTheCrown/NBT")
+        url.set("https://github.com/ArcadiusMC/NBT")
 
         licenses {
           license {
             name.set("MIT License")
-            url.set("https://raw.githubusercontent.com/ForTheCrown/NBT/main/LICENSE.md")
+            url.set("https://raw.githubusercontent.com/ArcadiusMC/NBT/main/LICENSE.md")
           }
         }
 
@@ -55,8 +63,8 @@ publishing {
         }
 
         scm {
-          connection.set("scm:git:git:github.com/ForTheCrown/NBT/.git")
-          developerConnection.set("scm:git:ssh://github.com/ForTheCrown/NBT/.git")
+          connection.set("scm:git:git:github.com/ArcadiusMC/NBT/.git")
+          developerConnection.set("scm:git:ssh://github.com/ArcadiusMC/NBT/.git")
           url.set("https://github.com/ForTheCrown/NBT")
         }
       }

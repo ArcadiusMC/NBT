@@ -1,7 +1,6 @@
 package net.forthecrown.nbt.paper;
 
 import net.forthecrown.nbt.CompoundTag;
-import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,8 +19,4 @@ public interface ItemNbtProvider {
   CompoundTag getUnhandledTags(ItemMeta meta);
 
   void setUnhandledTags(ItemMeta meta, CompoundTag tag);
-
-  CompoundTag saveMeta(ItemMeta meta);
-
-  ItemMeta loadMeta(CompoundTag tag, Material metaType);
 }

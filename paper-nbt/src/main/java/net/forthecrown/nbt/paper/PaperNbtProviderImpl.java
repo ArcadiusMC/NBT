@@ -3,22 +3,27 @@ package net.forthecrown.nbt.paper;
 import java.lang.invoke.MethodHandle;
 import net.forthecrown.nbt.CompoundTag;
 import net.minecraft.core.HolderGetter;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.craftbukkit.v1_20_R3.block.CraftBlockEntityState;
-import org.bukkit.craftbukkit.v1_20_R3.block.data.CraftBlockData;
-import org.bukkit.craftbukkit.v1_20_R3.entity.CraftEntity;
+import org.bukkit.craftbukkit.block.CraftBlockEntityState;
+import org.bukkit.craftbukkit.block.data.CraftBlockData;
+import org.bukkit.craftbukkit.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 
 class PaperNbtProviderImpl implements PaperNbtProvider {
   static final PaperNbtProviderImpl INSTANCE = new PaperNbtProviderImpl();
+
+  static final HolderLookup.Provider LOOKUP_PROVIDER
+      = DedicatedServer.getServer().registryAccess();
 
   // pdc: PersistentDataContainer
   static final MethodHandle pdc_putAll;
@@ -43,14 +48,19 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
   @Override
   public CompoundTag saveBlockEntity(TileState state) {
     CraftBlockEntityState craft = (CraftBlockEntityState) state;
-    var tag = craft.getTileEntity().saveWithFullMetadata();
+
+    net.minecraft.nbt.CompoundTag tag
+        = craft.getTileEntity().saveWithFullMetadata(LOOKUP_PROVIDER);
+
     return TagTranslators.COMPOUND.toApiType(tag);
   }
 
   @Override
   public void loadBlockEntity(TileState state, CompoundTag tag) {
     CraftBlockEntityState craft = (CraftBlockEntityState) state;
-    craft.getTileEntity().load(TagTranslators.COMPOUND.toMinecraft(tag));
+    BlockEntity tile = craft.getTileEntity();
+
+    tile.loadWithComponents(TagTranslators.COMPOUND.toMinecraft(tag), LOOKUP_PROVIDER);
   }
 
   @Override

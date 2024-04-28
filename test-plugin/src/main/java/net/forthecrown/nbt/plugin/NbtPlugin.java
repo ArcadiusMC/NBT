@@ -4,9 +4,7 @@ import com.google.common.base.Preconditions;
 import java.util.Objects;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
-import net.forthecrown.nbt.paper.ItemNbtProvider;
 import net.forthecrown.nbt.paper.PaperNbt;
-import net.forthecrown.nbt.string.Snbt;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -17,31 +15,15 @@ import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.slf4j.Logger;
 
 public class NbtPlugin extends JavaPlugin {
 
+  private Logger LOGGER;
+
   @Override
   public void onEnable() {
-    CompoundTag tag = BinaryTags.compoundTag();
-    tag.putInt("CustomModelData", 12);
-
-    ItemMeta meta = ItemNbtProvider.provider().loadMeta(tag, Material.STONE);
-
-    Validate.isTrue(
-        meta.hasCustomModelData() && meta.getCustomModelData() == 12,
-        "Mismatch between model data"
-    );
-
-    getSLF4JLogger().debug("meta.customModelData={}, tag={}",
-        meta.getCustomModelData(),
-        Snbt.toString(tag, true, false)
-    );
-
-    CompoundTag saved = ItemNbtProvider.provider().saveMeta(meta);
-    Validate.isTrue(
-        saved.getInt("CustomModelData") == 12,
-        "Invalid model data in saved"
-    );
+    LOGGER = getSLF4JLogger();
 
     testItemLoad();
     testGeneral();
@@ -58,6 +40,8 @@ public class NbtPlugin extends JavaPlugin {
     itemTag.putInt("CustomModelData", 13);
 
     tag.put("tag", itemTag);
+
+    LOGGER.debug("testItemLoad, tag={}", tag);
 
     ItemStack loaded = PaperNbt.loadItem(tag);
 
@@ -77,11 +61,8 @@ public class NbtPlugin extends JavaPlugin {
         "CustomModelData mismatch"
     );
 
-    CompoundTag savedMeta = ItemNbtProvider.provider().saveMeta(meta);
-    Validate.isTrue(
-        savedMeta.getInt("test_value") == 12,
-        "test_value mismatch"
-    );
+    LOGGER.debug("loaded={}", loaded);
+    LOGGER.debug("resaved={}", PaperNbt.saveItem(loaded).toNbtString());
   }
 
   void testGeneral() {
@@ -91,6 +72,9 @@ public class NbtPlugin extends JavaPlugin {
     // Shouldn't throw any exceptions
     CompoundTag tag = PaperNbt.saveBlockData(data);
     BlockData loaded = PaperNbt.loadBlockData(tag);
+
+    LOGGER.debug("testGeneral, data={} tag={}, loaded={}", data, tag, loaded);
+    Validate.isTrue(loaded.equals(data), "Loaded block data mismatch");
   }
 
   void testDataContainer() {
