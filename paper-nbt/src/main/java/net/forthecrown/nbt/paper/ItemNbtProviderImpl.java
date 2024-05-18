@@ -11,6 +11,7 @@ import net.forthecrown.nbt.TagTypes;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.UnsafeValues;
+import org.bukkit.craftbukkit.inventory.CraftMetaArmor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -94,6 +95,11 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     try {
       @SuppressWarnings("unchecked")
       net.minecraft.nbt.CompoundTag tags = (net.minecraft.nbt.CompoundTag) customTag.get(meta);
+
+      if (tags == null) {
+        return BinaryTags.compoundTag();
+      }
+
       return TagTranslators.COMPOUND.toApiType(tags);
     } catch (ReflectiveOperationException exc) {
       throw new IllegalStateException(exc);
