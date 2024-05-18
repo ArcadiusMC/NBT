@@ -2,7 +2,7 @@ import io.papermc.paperweight.userdev.ReobfArtifactConfiguration
 
 plugins {
   id("java")
-  id("io.papermc.paperweight.userdev") version "1.6.0"
+  id("io.papermc.paperweight.userdev") version "1.7.1"
 
   id("maven-publish")
   id("signing")
@@ -23,7 +23,7 @@ dependencies {
 
   implementation(project(":nbt"))
 
-  paperweight.paperDevBundle("1.20.5-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.20.6-R0.1-SNAPSHOT")
 }
 
 tasks {
@@ -46,7 +46,7 @@ tasks {
 }
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(22))
+  toolchain.languageVersion.set(JavaLanguageVersion.of(21))
 }
 
 paperweight.reobfArtifactConfiguration = ReobfArtifactConfiguration.MOJANG_PRODUCTION
