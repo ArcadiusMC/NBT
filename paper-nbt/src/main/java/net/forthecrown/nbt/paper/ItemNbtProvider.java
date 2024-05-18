@@ -16,7 +16,7 @@ public interface ItemNbtProvider {
 
   ItemStack loadItem(CompoundTag tag);
 
-  CompoundTag getUnhandledTags(ItemMeta meta);
+  CompoundTag getCustomData(ItemMeta meta);
 
-  void setUnhandledTags(ItemMeta meta, CompoundTag tag);
+  void setCustomData(ItemMeta meta, CompoundTag tag);
 }

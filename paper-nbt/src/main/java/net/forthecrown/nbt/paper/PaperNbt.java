@@ -142,29 +142,47 @@ public final class PaperNbt {
   /**
    * Gets the unhandled tags inside an item meta.
    * <p>
-   * Unhandled tags are any tags that Bukkit have not handled by themselves,
-   * allowing us to edit the custom NBT inside items without saving and loading
-   * the entire item-stack
+   * Unhandled tags in this function's context is just the {@code custom_data}
    *
+   * @deprecated Misleading name
    * @param meta Meta to get tags from
    * @return Unhandled tags
    */
+  @Deprecated
   public static CompoundTag getUnhandledTags(ItemMeta meta) {
-    return items.getUnhandledTags(meta);
+    return items.getCustomData(meta);
+  }
+
+  /**
+   * Gets the value of an item's {@code custom_data} component
+   * @param meta Meta to get custom data of
+   * @return Custom data, or an empty compound tag, if no data was found
+   */
+  public static CompoundTag getCustomData(ItemMeta meta) {
+    return items.getCustomData(meta);
   }
 
   /**
    * Sets the unhandled tags inside an item meta
    * <p>
-   * Unhandled tags are any tags that Bukkit have not handled by themselves,
-   * allowing us to edit the custom NBT inside items without saving and loading
-   * the entire item-stack
+   * Unhandled tags in this function's context is just the {@code custom_data}
    *
    * @param meta Meta to set the tags of
    * @param tag New value for the unhandled tags
+   * @deprecated Misleading name
    */
+  @Deprecated
   public static void setUnhandledTags(ItemMeta meta, CompoundTag tag) {
-    items.setUnhandledTags(meta, tag);
+    items.setCustomData(meta, tag);
+  }
+
+  /**
+   * Sets the value of the {@code custom_data} component of an item.
+   * @param meta Item meta to edit
+   * @param tag Custom data tag
+   */
+  public static void setCustomData(ItemMeta meta, CompoundTag tag) {
+    items.setCustomData(meta, tag);
   }
 
   /* ------------------------- COMPONENT-RELATED -------------------------- */

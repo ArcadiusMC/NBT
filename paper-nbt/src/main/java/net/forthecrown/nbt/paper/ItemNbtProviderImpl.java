@@ -89,7 +89,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
   }
 
   @Override
-  public CompoundTag getUnhandledTags(ItemMeta meta) {
+  public CompoundTag getCustomData(ItemMeta meta) {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
@@ -107,7 +107,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
   }
 
   @Override
-  public void setUnhandledTags(ItemMeta meta, CompoundTag tag) {
+  public void setCustomData(ItemMeta meta, CompoundTag tag) {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
