@@ -8,10 +8,10 @@ import java.util.Objects;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import net.forthecrown.nbt.TagTypes;
+import net.forthecrown.nbt.paper.TagTranslators.TagTranslator;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.UnsafeValues;
-import org.bukkit.craftbukkit.inventory.CraftMetaArmor;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -93,7 +93,6 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
-      @SuppressWarnings("unchecked")
       net.minecraft.nbt.CompoundTag tags = (net.minecraft.nbt.CompoundTag) customTag.get(meta);
 
       if (tags == null) {
@@ -111,10 +110,7 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
-      @SuppressWarnings("unchecked")
-      net.minecraft.nbt.CompoundTag tags = (net.minecraft.nbt.CompoundTag) customTag.get(meta);
-      tags.tags.clear();
-      tags.tags.putAll(TagTranslators.COMPOUND.toMinecraft(tag).tags);
+      customTag.set(meta, TagTranslators.COMPOUND.toMinecraft(tag));
     } catch (ReflectiveOperationException exc) {
       throw new IllegalStateException(exc);
     }
