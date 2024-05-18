@@ -5,6 +5,7 @@ import java.util.Objects;
 import net.forthecrown.nbt.BinaryTags;
 import net.forthecrown.nbt.CompoundTag;
 import net.forthecrown.nbt.paper.PaperNbt;
+import net.forthecrown.nbt.string.Snbt;
 import org.apache.commons.lang3.Validate;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -28,6 +29,47 @@ public class NbtPlugin extends JavaPlugin {
     testItemLoad();
     testGeneral();
     testDataContainer();
+    testItemCustomData();
+    testItemNoCustomData();
+  }
+
+  void testItemNoCustomData() {
+    CompoundTag tag = BinaryTags.compoundTag();
+    tag.putString("id", "minecraft:stone");
+    tag.putInt("count", 1);
+
+    ItemStack item = PaperNbt.loadItem(tag);
+    ItemMeta meta = item.getItemMeta();
+
+    CompoundTag customData = PaperNbt.getCustomData(meta);
+
+    Validate.isTrue(customData.isEmpty(), "How is there any custom data???");
+  }
+
+  void testItemCustomData() {
+    CompoundTag tag = BinaryTags.compoundTag();
+    tag.putString("id", "minecraft:stone");
+    tag.putInt("count", 1);
+
+    CompoundTag components = BinaryTags.compoundTag();
+    CompoundTag customData = BinaryTags.compoundTag();
+    customData.putBoolean("this_is_true", true);
+
+    components.put("minecraft:custom_data", customData);
+    tag.put("components", components);
+
+    ItemStack loaded = PaperNbt.loadItem(tag);
+    ItemMeta meta = loaded.getItemMeta();
+
+    CompoundTag gottenData = PaperNbt.getCustomData(meta);
+
+    Validate.isTrue(gottenData.contains("this_is_true"), "this_is_true not found");
+    Validate.isTrue(gottenData.getBoolean("this_is_true"), "wrong value gotten :(");
+
+    LOGGER.debug("testItemCustomData");
+    LOGGER.debug("tag={}", Snbt.toString(tag, true, true));
+    LOGGER.debug("gottenData={}", Snbt.toString(gottenData, true, true));
+    LOGGER.debug("---");
   }
 
   void testItemLoad() {
