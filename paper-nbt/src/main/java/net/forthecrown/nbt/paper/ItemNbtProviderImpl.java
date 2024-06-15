@@ -110,7 +110,11 @@ class ItemNbtProviderImpl implements ItemNbtProvider {
     Objects.requireNonNull(meta, "ItemMeta");
 
     try {
-      customTag.set(meta, TagTranslators.COMPOUND.toMinecraft(tag));
+      if (tag == null || tag.isEmpty()) {
+        customTag.set(meta, null);
+      } else {
+        customTag.set(meta, TagTranslators.COMPOUND.toMinecraft(tag));
+      }
     } catch (ReflectiveOperationException exc) {
       throw new IllegalStateException(exc);
     }
