@@ -36,11 +36,9 @@ class ObjectNode extends FilterableNode {
 
     if (found == null) {
       if (supplier == null) {
-        System.out.println(name);
         return;
       }
 
-      System.out.println("put");
       var res = supplier.get();
       c.put(name, res);
       results.add(res);
