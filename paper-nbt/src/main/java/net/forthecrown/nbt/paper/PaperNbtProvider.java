@@ -1,11 +1,13 @@
 package net.forthecrown.nbt.paper;
 
 import net.forthecrown.nbt.CompoundTag;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.NotNull;
 
 public interface PaperNbtProvider {
 
@@ -34,4 +36,8 @@ public interface PaperNbtProvider {
   );
 
   void mergeToContainer(PersistentDataContainer container, CompoundTag tag);
+
+  CompoundTag getStoredData(@NotNull NamespacedKey key);
+
+  void setStoredData(@NotNull NamespacedKey k, @NotNull CompoundTag tag);
 }

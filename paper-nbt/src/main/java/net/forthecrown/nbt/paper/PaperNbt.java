@@ -3,6 +3,7 @@ package net.forthecrown.nbt.paper;
 import net.forthecrown.nbt.BinaryTag;
 import net.forthecrown.nbt.CompoundTag;
 import net.kyori.adventure.text.Component;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * General utility class that provides access to NBT tags in Bukkit, Spigot and
@@ -117,6 +119,34 @@ public final class PaperNbt {
    */
   public static void mergeToContainer(PersistentDataContainer container, CompoundTag tag) {
     tags.mergeToContainer(container, tag);
+  }
+
+  /**
+   * Gets a data assocated with the specified {@code key} in the server's command storage.
+   * <p>
+   * Any values in the command storage can also be accessed with the
+   * {@code /data get storage <key>} command.
+   *
+   * @param key Storage key
+   *
+   * @return Stored command data, or an empty tag, if there was no data associated with
+   *         the specified {@code key}
+   */
+  public static CompoundTag getStoredData(@NotNull NamespacedKey key) {
+    return tags.getStoredData(key);
+  }
+
+  /**
+   * Sets a data value in the server's command storage.
+   * <p>
+   * Any values in the command storage can also be modified wit the
+   * {@code /data merge storage <key> <nbt data>} command.
+   *
+   * @param key Storage key
+   * @param tag Storage value
+   */
+  public static void setStoredData(@NotNull NamespacedKey key, @NotNull CompoundTag tag) {
+    tags.setStoredData(key, tag);
   }
 
   /* ----------------------------- ITEM DATA ------------------------------ */

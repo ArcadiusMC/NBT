@@ -1,6 +1,7 @@
 package net.forthecrown.nbt.paper;
 
 import java.lang.invoke.MethodHandle;
+import java.util.Objects;
 import net.forthecrown.nbt.CompoundTag;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
@@ -8,16 +9,20 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.TileState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.block.CraftBlockEntityState;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
 import org.bukkit.persistence.PersistentDataContainer;
+import org.jetbrains.annotations.NotNull;
 
 class PaperNbtProviderImpl implements PaperNbtProvider {
   static final PaperNbtProviderImpl INSTANCE = new PaperNbtProviderImpl();
@@ -114,5 +119,28 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
   @Override
   public void mergeToContainer(PersistentDataContainer container, CompoundTag tag) {
     Reflect.invokeHandle(pdc_putAll, container, TagTranslators.COMPOUND.toMinecraft(tag));
+  }
+
+  @Override
+  public CompoundTag getStoredData(@NotNull NamespacedKey key) {
+    Objects.requireNonNull(key, "Null key");
+
+    net.minecraft.nbt.CompoundTag nmsTag = DedicatedServer.getServer()
+        .getCommandStorage()
+        .get(CraftNamespacedKey.toMinecraft(key));
+
+    return TagTranslators.COMPOUND.toApiType(nmsTag);
+  }
+
+  @Override
+  public void setStoredData(@NotNull NamespacedKey k, @NotNull CompoundTag tag) {
+    Objects.requireNonNull(k, "Null key");
+    Objects.requireNonNull(tag, "Null tag");
+
+    net.minecraft.nbt.CompoundTag nmsTag = TagTranslators.COMPOUND.toMinecraft(tag);
+
+    DedicatedServer.getServer()
+        .getCommandStorage()
+        .set(CraftNamespacedKey.toMinecraft(k), nmsTag);
   }
 }
