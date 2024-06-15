@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "net.forthecrown"
-version = "1.7.1"
+version = "1.7.3"
 
 repositories {
   mavenCentral()
