@@ -31,6 +31,7 @@ public class NbtPlugin extends JavaPlugin {
     testDataContainer();
     testItemCustomData();
     testItemNoCustomData();
+    testCommandStorage();
   }
 
   void testItemNoCustomData() {
@@ -137,6 +138,25 @@ public class NbtPlugin extends JavaPlugin {
 
         "Container objects not equal! container=%s, container1=%s",
         container, container1
+    );
+  }
+
+  void testCommandStorage() {
+    NamespacedKey key = new NamespacedKey(this, "storage_test");
+
+    CompoundTag tag = BinaryTags.compoundTag();
+    tag.putString("str", "Hello, world!");
+    tag.putInt("an_int", 23245);
+
+    PaperNbt.setStoredData(key, tag);
+
+    CompoundTag gotten = PaperNbt.getStoredData(key);
+
+    Preconditions.checkState(
+        BinaryTags.compareTags(tag, gotten, true),
+
+        "Not the same :( tag=%s, gotten=%s",
+        tag, gotten
     );
   }
 
