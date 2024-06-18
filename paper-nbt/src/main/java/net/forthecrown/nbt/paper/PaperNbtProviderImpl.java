@@ -18,6 +18,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.block.CraftBlockEntityState;
 import org.bukkit.craftbukkit.block.data.CraftBlockData;
 import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.persistence.CraftPersistentDataContainer;
 import org.bukkit.craftbukkit.util.CraftNamespacedKey;
 import org.bukkit.entity.Entity;
 import org.bukkit.persistence.PersistentDataAdapterContext;
@@ -29,18 +30,6 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
 
   static final HolderLookup.Provider LOOKUP_PROVIDER
       = DedicatedServer.getServer().registryAccess();
-
-  // pdc: PersistentDataContainer
-  static final MethodHandle pdc_putAll;
-  static final MethodHandle pdc_toTagCompound;
-
-  static {
-    Class<?> craftClass = Reflect.getCraftBukkitClass("persistence.CraftPersistentDataContainer");
-    Class vanillaCompoundClass = net.minecraft.nbt.CompoundTag.class;
-
-    pdc_putAll = Reflect.findHandle(craftClass, "putAll", Void.TYPE, vanillaCompoundClass);
-    pdc_toTagCompound = Reflect.findHandle(craftClass, "toTagCompound", vanillaCompoundClass);
-  }
 
   private static <T> HolderGetter<T> lookup(
       ResourceKey<? extends Registry<? extends T>> key
@@ -102,7 +91,8 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
 
   @Override
   public CompoundTag fromDataContainer(PersistentDataContainer container) {
-    net.minecraft.nbt.CompoundTag vanillaTag = Reflect.invokeHandle(pdc_toTagCompound, container);
+    CraftPersistentDataContainer craft = (CraftPersistentDataContainer) container;
+    net.minecraft.nbt.CompoundTag vanillaTag = craft.toTagCompound();
     return TagTranslators.COMPOUND.toApiType(vanillaTag);
   }
 
@@ -118,7 +108,8 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
 
   @Override
   public void mergeToContainer(PersistentDataContainer container, CompoundTag tag) {
-    Reflect.invokeHandle(pdc_putAll, container, TagTranslators.COMPOUND.toMinecraft(tag));
+    CraftPersistentDataContainer craft = (CraftPersistentDataContainer) container;
+    craft.putAll(TagTranslators.COMPOUND.toMinecraft(tag));
   }
 
   @Override
