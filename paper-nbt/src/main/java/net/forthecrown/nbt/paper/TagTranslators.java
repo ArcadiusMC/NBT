@@ -232,9 +232,9 @@ public interface TagTranslators {
     public CompoundTag toApiType(net.minecraft.nbt.CompoundTag minecraft) {
       var tag = BinaryTags.compoundTag();
 
-      minecraft.tags.forEach((s, tag1) -> {
-        tag.put(s, TagTranslators.toApi(tag1));
-      });
+      for (String key : minecraft.getAllKeys()) {
+        tag.put(key, TagTranslators.toApi(minecraft.get(key)));
+      }
 
       return tag;
     }
