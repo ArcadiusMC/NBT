@@ -6,6 +6,7 @@ import net.forthecrown.nbt.CompoundTag;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.resources.ResourceKey;
@@ -30,14 +31,6 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
 
   static final HolderLookup.Provider LOOKUP_PROVIDER
       = DedicatedServer.getServer().registryAccess();
-
-  private static <T> HolderGetter<T> lookup(
-      ResourceKey<? extends Registry<? extends T>> key
-  ) {
-    return DedicatedServer.getServer()
-        .registryAccess()
-        .lookupOrThrow(key);
-  }
 
   @Override
   public CompoundTag saveBlockEntity(TileState state) {
@@ -67,7 +60,7 @@ class PaperNbtProviderImpl implements PaperNbtProvider {
   public BlockData loadBlockData(CompoundTag tag) {
     net.minecraft.nbt.CompoundTag nms = TagTranslators.COMPOUND.toMinecraft(tag);
     var state = NbtUtils.readBlockState(
-        lookup(Registries.BLOCK),
+        BuiltInRegistries.BLOCK,
         nms
     );
 
